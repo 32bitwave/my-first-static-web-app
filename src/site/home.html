@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Milliamp.xyz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+
+  <style>
+    :root {
+      --sky-top: #fff5e0;
+      --sky-mid: #ffe8c8;
+      --sky-bottom: #ffd9a8;
+      --bubble-orange: #ff7f3f;
+      --text: #4b2e2e;
+      --glass: rgba(255, 245, 230, 0.9);
+      --button-orange: #ff6f3a;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, system-ui, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    body {
+      background: linear-gradient(to bottom,
+          var(--sky-top),
+          var(--sky-mid) 45%,
+          var(--sky-bottom));
+      color: var(--text);
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 25%, #ffffffdd, transparent 40%),
+        radial-gradient(circle at 80% 30%, #ffffffcc, transparent 45%),
+        radial-gradient(circle at 50% 85%, #ffffffbb, transparent 55%);
+      pointer-events: none;
+    }
+
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background-color: var(--bubble-orange);
+      box-shadow:
+        0 0 16px rgba(255, 127, 63, 0.6),
+        inset 0 2px 4px rgba(255, 255, 255, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      animation: float linear infinite;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .bubble.pop {
+      transform: scale(0);
+      opacity: 0;
+    }
+
+    @keyframes float {
+      from {
+        transform: translateY(110vh);
+      }
+
+      to {
+        transform: translateY(-130vh);
+      }
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      pointer-events: none;
+    }
+
+    .glass {
+      background:
+        linear-gradient(to bottom,
+          var(--glass),
+          rgba(255, 245, 230, 0.6));
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 30px;
+      padding: 2.6rem 2.4rem;
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      pointer-events: auto;
+      box-shadow:
+        inset 0 2px 0 rgba(255, 255, 255, 0.95),
+        inset 0 -2px 0 rgba(255, 255, 255, 0.35),
+        0 30px 60px rgba(255, 127, 63, 0.25);
+      border: 1px solid var(--glass);
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 7vw, 3.8rem);
+      margin: 0;
+      letter-spacing: -0.04em;
+      text-shadow:
+        0 1px 0 #ffffff,
+        0 0 12px rgba(255, 245, 230, 0.6);
+    }
+
+    p {
+      font-size: 1.05rem;
+      margin: 1rem 0 1.8rem;
+      opacity: 0.95;
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin-top: 1.2rem;
+    }
+
+    .links a {
+      text-decoration: none;
+      color: #fff;
+      background: var(--button-orange);
+      border: 1px solid #ff906d;
+      border-radius: 999px;
+      padding: 0.6rem 1.4rem;
+      font-size: 0.95rem;
+      box-shadow:
+        inset 0 1px 0 #ffd9a8,
+        0 6px 14px rgba(255, 127, 63, 0.25);
+      transition: transform 0.15s ease, background 0.2s ease;
+    }
+
+    .links a:hover {
+      background: #ff906d;
+    }
+
+    .links a:active {
+      transform: scale(0.96);
+    }
+
+    .hint {
+      margin-top: 1.4rem;
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+
+    @media (max-width: 480px) {
+      .glass {
+        padding: 2.2rem 1.6rem;
+      }
+    }
+
+    .btn:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="bubble-layer"></div>
+
+  <div class="container">
+    <div class="glass">
+      <h1>milliamp.xyz</h1>
+      <p>
+        Electronics<br />
+        With Musical Tones
+      </p>
+
+      <div class="links">
+        <a href="tools/ohmsLaw.html" class="btn">🧾 Ohms Law 🧾</a>
+        <a href="tools/resistorToolParallel.html" class="btn">🧬 Parallel Resistors 🧬</a>
+        <a href="tools/voltageDivder.html" class="btn">⚡ Voltage Divider ⚡</a>
+      </div>
+
+      <div class="hint">Click the bubbles!</div>
+    </div>
+  </div>
+
+  <script>
+    const layer = document.getElementById("bubble-layer");
+    const isMobile = window.innerWidth < 600;
+
+    function createBubble() {
+      const b = document.createElement("div");
+      const size = Math.random() * (isMobile ? 30 : 50) + 55;
+
+      b.className = "bubble";
+      b.style.width = b.style.height = size + "px";
+      b.style.left = Math.random() * 100 + "vw";
+      b.style.animationDuration =
+        (Math.random() * 10 + 16) + "s";
+
+      b.addEventListener("click", () => {
+        b.classList.add("pop");
+        playOhmSound();
+        setTimeout(() => b.remove(), 200);
+      });
+
+      layer.appendChild(b);
+      setTimeout(() => b.remove(), 30000);
+    }
+
+    setInterval(createBubble, isMobile ? 900 : 650);
+
+    let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    const attackTime = 0.1;
+    const releaseTime = 0.9;
+
+    // Function to play the tone
+    function playTone(audioCtx, frequency, startTime, duration, maxGain, attack, release) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = 'sine'; 
+      osc.frequency.setValueAtTime(frequency, startTime);
+
+      gain.gain.setValueAtTime(0, startTime); 
+      gain.gain.linearRampToValueAtTime(maxGain, startTime + attack); 
+      gain.gain.setValueAtTime(maxGain, startTime + duration - release); 
+      gain.gain.linearRampToValueAtTime(0, startTime + duration); 
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(startTime);
+      osc.stop(startTime + duration);
+    }
+
+    function playOhmSound() {
+      const now = audioCtx.currentTime;
+      const frequency = pickRandomNote();
+      const duration = 1; 
+      const maxGain = 0.5; 
+      playTone(audioCtx, frequency, now, duration, maxGain, attackTime, releaseTime);
+    }
+
+    function pickRandomNote() {
+      const array = [
+        369.99,
+        415.30,
+        466.16,
+        311.13,
+        369.99,
+        155.56,
+        277.18,
+        554.37,
+        622.25,
+        185.00,
+        207.65,
+        233.08
+      ];
+      return array[Math.floor(Math.random() * array.length)];
+    }
+  </script>
+
+</body>
+
+</html>
