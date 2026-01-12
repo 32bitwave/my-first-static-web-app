@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ohm's Law</title>
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #4b2e2e;
+            background: linear-gradient(135deg, #ffcc80, #ffb74d);
+        }
+
+        .container {
+            background: beige;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+
+        .subContainer {
+            background: linear-gradient(135deg, #ffcc80, #ffb74d);
+            backdrop-filter: blur(14px);
+            /* -webkit-backdrop-filter: blur(14px); */
+            padding: 10px;
+            border-radius: 12px;
+            margin: 0 auto;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ff8f00;
+        }
+
+        h2 {
+            text-align: center;
+            color: rgb(58, 28, 1);
+        }
+
+        .control {
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .row {
+            display: flex;
+            justify-content: left;
+            align-items: left;
+            gap: 10px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: #ff8f00;
+        }
+
+        input[type="number"] {
+            width: 110px;
+            padding: 5px;
+            accent-color: #ff8f00;
+            background-color: white;
+            border-radius: 8px;
+        }
+
+        input[type="checkbox"] {
+            accent-color: #ff8f00;
+        }
+
+        .value {
+            margin-top: 8px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .links a {
+            text-decoration: none;
+            color: rgb(58, 28, 1);
+            background: #ff8f00;
+            border-radius: 999px;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.95rem;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .links a:hover {
+            background: #ff906d;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Ohm’s Law</h1>
+
+        <!-- Voltage -->
+        <div class="control">
+            <div class="row">
+                <input type="checkbox" name="solve" id="voltage" onclick="selectSolve('voltage')">
+                <label>Voltage (V)</label>
+            </div>
+            <input type="range" min="1" max="12" step="1.00" id="voltageSlider"
+                oninput="inputChanged('voltage', this.value)">
+            <input type="number" min="1" max="12" step="1.00" class="hide" id="voltageInput"
+                oninput="inputChanged('voltage', this.value)">
+            <div class="value" id="voltageDisplay"></div>
+        </div>
+
+        <!-- Resistance -->
+        <div class="control">
+            <div class="row">
+                <input type="checkbox" name="solve" id="resistance" onclick="selectSolve('resistance')">
+                <label>Resistance (Ω)</label>
+            </div>
+            <input type="range" min="50" max="1000" step="50" id="resistanceSlider"
+                oninput="inputChanged('resistance', this.value)">
+            <input type="number" min="50" max="1000" step="50" class="hide" id="resistanceInput"
+                oninput="inputChanged('resistance', this.value)">
+            <div class="value" id="resistanceDisplay"></div>
+        </div>
+
+        <!-- Current (A) -->
+        <div class="control">
+            <div class="row">
+                <input type="checkbox" name="solve" id="current" onclick="selectSolve('current')" checked>
+                <label>Current (Amps)</label>
+            </div>
+            <input type="range" min="0.0001" max="0.1" step="0.001" id="currentSlider"
+                oninput="inputChanged('current', this.value)">
+            <input type="number" min="0.0001" max="0.1" step="0.001" class="hide" id="currentInput"
+                oninput="inputChanged('current', this.value)">
+            <div class="value" id="currentDisplay"></div>
+        </div>
+        <div class="subContainer">
+            <h2>Equations</h2>
+            <h2>Voltage = Current * Resistance</h2>
+            <h2>Resistance = Voltage / Current</h2>
+            <h2>Current = Voltage / Resistance</h2>
+        </div>
+        <div class="links">
+            <a href="../home.html">🏠 Home 🏠</a>
+        </div>
+    </div>
+
+    <script>
+        let voltage = 7.0;          // volts
+        let resistance = 200.0;   // ohms
+        let currentA = 0.0350;      // amps (internal)
+
+        let solveFor = "current";  // default
+
+        function selectSolve(variable) {
+            solveFor = variable;
+
+            document.querySelectorAll('input[name="solve"]').forEach(cb => cb.checked = false);
+            event.target.checked = true;
+            playNotification();
+            recalc();
+            render();
+        }
+
+        function inputChanged(type, value) {
+            inputChangedName = "current";
+            value = parseFloat(value);
+            if (value <= 0) return;
+
+            if (type === "voltage") {
+                voltage = value;
+                inputChangedName = "voltage";
+            }
+            if (type === "resistance") {
+                resistance = value;
+                inputChangedName = "resistance";
+            }
+            if (type === "current") {
+                currentA = value;
+                inputChangedName = "current";
+            }
+
+            if (solveFor != inputChangedName) {
+                playNotification();
+            }
+
+            recalc();
+            render();
+        }
+
+        function recalc() {
+            if (solveFor === "voltage") {
+                voltage = currentA * resistance;
+            }
+            else if (solveFor === "current") {
+                currentA = voltage / resistance;
+            }
+            else if (solveFor === "resistance") {
+                resistance = voltage / currentA;
+            }
+        }
+
+        function render() {
+            set("voltage", voltage);
+            set("resistance", resistance);
+            set("current", currentA);
+        }
+
+        function set(name, value) {
+            document.getElementById(name + "Slider").value = value;
+            document.getElementById(name + "Input").value = value;
+            document.getElementById(name + "Display").textContent =
+                Number(value).toFixed(4);
+        }
+        let audioCtx = null;
+        const attackTime = 0.3;   // very short fade-in
+        const releaseTime = 0.5;  // short fade-out
+        function playTone(audioCtx, frequency, startTime, duration, maxGain, attack, release) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(frequency, startTime);
+
+            gain.gain.setValueAtTime(0, startTime);
+            gain.gain.linearRampToValueAtTime(maxGain, startTime + attack);
+            gain.gain.setValueAtTime(maxGain, startTime + duration - release);
+            gain.gain.linearRampToValueAtTime(0, startTime + duration);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(startTime);
+            osc.stop(startTime + duration);
+        }
+
+        function playNotification() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            // Required if context is suspended
+            if (audioCtx.state === "suspended") {
+                audioCtx.resume();
+            }
+            const now = audioCtx.currentTime;
+
+            const note1Dur = 0.5;
+            switch (getRandomInt(13)) {
+                case 0:
+                    playTone(audioCtx, 369.99, now, note1Dur, 0.2, attackTime, releaseTime);
+                    break;
+                case 1:
+                    playTone(audioCtx, 415.30, now, note1Dur, 0.2, attackTime, releaseTime);
+                    break;
+                case 2:
+                    playTone(audioCtx, 466.16, now, note1Dur, 0.2, attackTime, releaseTime);
+                    break;
+                case 3:
+                    playTone(audioCtx, 311.13, now, note1Dur, 0.2, attackTime, releaseTime);
+                    break;
+                case 4:
+                    playTone(audioCtx, 369.99, now, note1Dur, 0.2, attackTime, releaseTime);
+                    break;
+                case 5:
+                    playTone(audioCtx, 155.56, now, note1Dur, 0.2, attackTime, releaseTime);
+                    break;
+                case 6:
+                    playTone(audioCtx, 277.18, now, note1Dur, 0.2, attackTime, releaseTime);
+                    break;
+                case 7:
+                    playTone(audioCtx, 554.37, now, note1Dur, 0.2, attackTime, releaseTime);
+                    break;
+                case 8:
+                    playTone(audioCtx, 622.25, now, note1Dur, 0.2, attackTime, releaseTime);
+                    break;
+                case 9:
+                    playTone(audioCtx, 185.00, now, note1Dur, 0.2, attackTime, releaseTime);
+                    break;
+                case 10:
+                    playTone(audioCtx, 207.65, now, note1Dur, 0.2, attackTime, releaseTime);
+                    break;
+                case 11:
+                    playTone(audioCtx, 233.08, now, note1Dur, 0.2, attackTime, releaseTime);
+                    break;
+                case 12:
+                    playTone(audioCtx, 311.13, now, note1Dur, 0.2, attackTime, releaseTime);
+            }
+        }
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+        window.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('voltage').checked = false;
+            document.getElementById('resistance').checked = false;
+            document.getElementById('current').checked = true;
+        });
+
+        render();
+    </script>
+
+</body>
+
+</html>

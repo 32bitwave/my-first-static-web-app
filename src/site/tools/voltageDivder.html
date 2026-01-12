@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voltage Divider</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #ffcc80, #ffb74d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: #fff7ed;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            width: 380px;
+        }
+
+        h1 {
+            color: #ff8f00;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #ff8f00;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            text-align: left;
+        }
+
+        .bubble-box {
+            width: 100%;
+            padding: 16px 20px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 999px;
+            font-size: 1.1rem;
+            background-color: white;
+            outline: none;
+            box-shadow: inset 0 4px 6px rgba(255, 152, 0, 0.25), 0 8px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .bubble-box:hover {
+            transform: scale(1.1);
+        }
+
+        .bubble-box:focus {
+            transform: scale(1.2);
+        }
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button {
+            border: none;
+            border-radius: 999px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 12px;
+            color: white;
+            background: linear-gradient(135deg, #ffa726, #fb8c00);
+            transition: transform 0.2s ease;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        .calculate-btn {
+            margin-top: 20px;
+            width: 100%;
+            background: linear-gradient(135deg, #ff9800, #ff6f00);
+        }
+
+        .result {
+            margin-top: 25px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff6f00;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 999px;
+            display: none;
+            transform: scale(0);
+        }
+
+        .result.show {
+            display: inline-block;
+            animation: popIn 0.5s ease-out forwards;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .links a {
+            text-decoration: none;
+            color: rgb(58, 28, 1);
+            background: #ff8f00;
+            border-radius: 999px;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.95rem;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .links a:hover {
+            background: #ff906d;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            60% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Voltage Divider</h1>
+        <div id="inputs">
+            <h3>Voltage</h3>
+            <input id="box1" class="bubble-box" type="number" placeholder="Value (in Ω)">
+            <h3>Resistance 1 (Ω)</h3>
+            <input id="box2" class="bubble-box" type="number" placeholder="Value (in Ω)">
+            <h3>Resistance 2 (Ω)</h3>
+            <input id="box3" class="bubble-box" type="number" placeholder="Value (in Ω)">
+        </div>
+        <button id="calculateBtn" class="calculate-btn">Calculate</button>
+        <div id="result" class="result"></div>
+        <div class="links">
+            <a href="../home.html">🏠 Home 🏠</a>
+        </div>
+    </div>
+
+    <script>
+        const inputsDiv = document.getElementById("inputs");
+        const calculateBtn = document.getElementById("calculateBtn");
+        const resultDiv = document.getElementById("result");
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let lastSoundTime = 0;
+
+        function SelectRandomNote() {
+            const array = [
+                369.99,
+                415.30,
+                466.16,
+                311.13,
+                369.99,
+                155.56,
+                277.18,
+                554.37,
+                622.25,
+                185.00,
+                207.65,
+                233.08
+            ];
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function playBubbleSound() {
+            frequency = SelectRandomNote();
+            const now = Date.now();
+            if (now - lastSoundTime < 80) return; // cooldown
+            lastSoundTime = now;
+
+            if (audioCtx.state === "suspended") audioCtx.resume();
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = "square";
+            osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(frequency / 2, audioCtx.currentTime + 0.12);
+
+            gain.gain.setValueAtTime(0.80, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.12);
+        }
+
+        // Attach sound to a text box
+        function attachBubbleSound(input) {
+            input.addEventListener("focus", () => playBubbleSound());
+        }
+
+        document.querySelectorAll(".bubble-box").forEach(attachBubbleSound);
+
+        calculateBtn.addEventListener("click", () => {
+            playBubbleSound();
+
+            let voltage = parseFloat(document.getElementById(`box1`).value)
+            let resistanceOne = parseFloat(document.getElementById(`box2`).value)
+            let resistanceTwo = parseFloat(document.getElementById(`box3`).value)
+
+            TotalResistance = resistanceTwo / (resistanceOne + resistanceTwo);
+            let sum = (voltage * TotalResistance);
+            resultDiv.textContent = `Total: ${sum.toFixed(2)}`;
+
+            resultDiv.classList.remove("show");
+            void resultDiv.offsetWidth;
+            resultDiv.classList.add("show");
+        });
+    </script>
+</body>
+
+</html>
