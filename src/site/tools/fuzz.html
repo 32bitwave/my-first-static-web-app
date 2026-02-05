@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIY Time!</title>
+    <style>
+        :root {
+            --burnt-orange: #d36546;
+            --mustard: #f2cc8f;
+            --avocado: #81b29a;
+            --deep-brown: #3d405b;
+            --cream: #f4f1de;
+        }
+
+        body {
+            background-color: var(--mustard);
+            background-image: linear-gradient(180deg, var(--burnt-orange) 25%, transparent 25%),
+                linear-gradient(90deg, var(--mustard) 50%, var(--cream) 50%);
+            background-size: 80px 80px;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--deep-brown);
+            margin: 0;
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 95%;
+            margin: 10px auto;
+            background: var(--cream);
+            padding: 20px;
+            border-radius: 30px;
+            border: 6px solid var(--burnt-orange);
+            box-shadow: 10px 10px 0px var(--deep-brown);
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 4px dashed var(--avocado);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin: 10px 0;
+            color: var(--burnt-orange);
+            text-shadow: 2px 2px var(--mustard);
+            line-height: 1;
+        }
+
+        .camper-box {
+            width: auto;
+            height: auto;
+            background: var(--avocado);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid var(--deep-brown);
+        }
+
+        .camper-box img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .post-area {
+            margin-top: 25px;
+        }
+
+        .post-title {
+            font-size: 1.5rem;
+            background: var(--burnt-orange);
+            color: white;
+            display: inline-block;
+            padding: 5px 15px;
+            transform: rotate(-6deg);
+            margin-bottom: 10px;
+        }
+
+        .home-title {
+            font-size: 1.5rem;
+            background: var(--burnt-orange);
+            color: white;
+            display: inline-block;
+            padding: 5px 15px;
+            margin-bottom: 10px;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .links a {
+            text-decoration: none;
+            color: white;
+            background: var(--burnt-orange);
+            border-radius: 999px;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.95rem;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .blog-content {
+            line-height: 1.5;
+            font-size: 1.1rem;
+            padding: 10px;
+            min-height: 150px;
+        }
+
+        /* MEDIA QUERIES for bigger screens */
+        @media (min-width: 600px) {
+            body {
+                padding: 40px;
+            }
+
+            h1 {
+                font-size: 3.5rem;
+            }
+
+            .container {
+                padding: 40px;
+                width: 100%;
+            }
+
+            .post-title {
+                font-size: 2rem;
+            }
+
+            .camper-box {
+                width: auto;
+                height: auto;
+            }
+
+            .camper-box img {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+        }
+
+        .groovy-btn {
+            background: var(--deep-brown);
+            color: var(--cream);
+            padding: 15px 25px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            transition: transform 0.2s;
+        }
+
+        .groovy-btn:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>CLASSIC SOUND</h1>
+            <p><i>old school guitar sound</i></p>
+        </header>
+
+        <div class="camper-box">
+            <img src="fuzzBreadBoardRawText.png" alt="70s Van">
+        </div>
+
+        <div class="post-area">
+            <h2 class="post-title">Simple Fuzz</h2>
+
+            <div class="blog-content">
+                This design is largely inspired by: Colin Mitchell (Talking Electroncs) and Daredevil Pedals.
+                For a brief overview of how this circut works, we will seperate it into 5 very basic sections.
+                <br><br>
+                Input: This is where you will plug in your guitar. You are going to use this to feed a sound wave into
+                your circut that will be amplified and made to sound fuzzy.
+                <br><br>
+                Transistor 1: This is called a common emitter set in a self bias mode. This takes the tiny wave your
+                guitar produces and makes it big/tall (Voltage Gain).
+                <br><br>
+                Transistor 2: This is called a common collector. This will take the small amount of current your guitar
+                waves produce, and make them much stronger (Current Gain).
+                <br><br>
+                LED: This is called diode clipping. Remeber an LED is a light emitting DIODE. This is where you get that
+                fuzzy sound from. You can experiment here a bit; Try different LEDs or Diodes. It makes the wave from
+                your guitar get choppy.
+                <br><br>
+                Output: This is where your amp or powered speakers plug into. Never use headphones and start on a very
+                low volume to prevent hearing damage. In the event you wire something wrong, extremely loud pops, rings,
+                and high pitch noises can be produced.
+                <br><br>
+                You will need:
+                <ul>
+                    <li>[1] LED</li>
+                    <li>[2] 10uf Capacitors (Non polarized)</li>
+                    <li>[2] BC547 Transistor</li>
+                    <li>[1] 5.1KΩ Resistor</li>
+                    <li>[1] 100Ω Resistor</li>
+                    <li>[1] 220KΩ Resistor</li>
+                    <li>[1] 2.2KΩ Resistor</li>
+                    <li>[2] Audio Jacks</li>
+                    <li>[1] 9 Volt Battery</li>
+                    <li>[1] Breadboard</li>
+                </ul>
+                Plug in your guitar and enjoy a retro sound!
+            </div>
+        </div>
+
+        <div class="links">
+            <a href="../index.html">🏠 Home 🏠</a>
+        </div>
+    </div>
+
+    <script>
+        function home() {
+            //
+        }
+    </script>
+</body>
+
+</html>
