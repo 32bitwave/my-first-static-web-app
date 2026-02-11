@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIY Time!</title>
+    <title>Diodes!</title>
     <style>
         :root {
             --burnt-orange: #d36546;
@@ -179,54 +179,44 @@
 
     <div class="container">
         <header>
-            <h1>CLASSIC SOUND</h1>
-            <p><i>old school guitar sound</i></p>
+            <h1>Protect Your Circuits!</h1>
+            <p><i>Never connect anything backwards again</i></p>
         </header>
 
         <div class="camper-box">
-            <img src="fuzzBreadBoardRawText.png" alt="70s Van">
+            <img src="reverseDiodeProtectionNoted.PNG" alt="70s Van">
         </div>
 
         <div class="post-area">
-            <h2 class="post-title">Simple Fuzz</h2>
+            <h2 class="post-title">More Diodes!</h2>
 
             <div class="blog-content">
-                This design is largely inspired by: Colin Mitchell (Talking Electronics) and Daredevil Pedals.
-                For a brief overview of how this circut works, we will seperate it into 5 very basic sections.
+                This design is a simple example of circuit protection. 
+                If you have ever connected something backwards on your breadboard, you know it can lead to disastrous results!  
                 <br><br>
-                Input: This is where you will plug in your guitar. You are going to use this to feed a sound wave into
-                your circut that will be amplified and made to sound fuzzy.
+                The circuit will demonstrate this by turning on a green LED and allowing a motor to spin when correctly powered. 
+                If you connect your battery backwards (or mix up negative and positive like I do), the red LED will turn on.
                 <br><br>
-                Transistor 1: This is called a common emitter set in a self bias mode. This takes the tiny wave your
-                guitar produces and makes it big/tall (Voltage Gain).
+                The circuit works due to the Diodes(the 1N5817 and the red LED) we place in the middle of our breadboard. 
+                As a reminder, a diode allows current to flow in only one direction, not backwards (over-simplifying).
+                Also LEDs are diodes!
                 <br><br>
-                Transistor 2: This is called a common collector. This will take the small amount of current your guitar
-                waves produce, and make them much stronger (Current Gain).
-                <br><br>
-                LED: This is called diode clipping. Remeber an LED is a light emitting DIODE. This is where you get that
-                fuzzy sound from. You can experiment here a bit; Try different LEDs or Diodes. It makes the wave from
-                your guitar get choppy.
-                <br><br>
-                Output: This is where your amp or powered speakers plug into. Never use headphones and start on a very
-                low volume to prevent hearing damage. In the event you wire something wrong, extremely loud pops, rings,
-                and high pitch noises can be produced.
+                The best way to understand this circuit is to build it! 
+                You will immediately understand how current is flowing through the circuit.
+                Swap the power supply positive and negative a few times and you will see the results.
                 <br><br>
                 You will need:
                 <ul>
-                    <li>[1] LED</li>
-                    <li>[2] 10uf Capacitors (Non polarized)</li>
-                    <li>[2] BC547 Transistor</li>
-                    <li>[1] 5.1KΩ Resistor</li>
-                    <li>[1] 100Ω Resistor</li>
-                    <li>[1] 220KΩ Resistor</li>
-                    <li>[1] 2.2KΩ Resistor</li>
-                    <li>[2] Audio Jacks</li>
-                    <li>[1] 9 Volt Battery</li>
+                    <li>[2] LEDs</li>
+                    <li>[1] 1N5817 Diode</li>
+                    <li>[2] 220Ω Resistor</li>
+                    <li>[1] 5 Volt Battery</li>
+                    <li>[1] 5 Volt Motor</li>
                     <li>[1] Breadboard</li>
                 </ul>
-                If you do not have a BC547 you can use a 2N2222. Just be sure to note legs (B, C, E) may be different on the 2N2222!
-                <br><br>
-                Plug in your guitar and enjoy a retro sound!
+                Try connecting something other than a 5 volt motor to your green LED side. 
+                Something to note about this circuit: Its current limited by the diodes used.
+                You can try different diodes and swap out the LEDs eventually, but check datasheets for your use case. Have Fun!
             </div>
         </div>
 
