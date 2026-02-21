@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSD1306</title>
+    <style>
+        :root {
+            --burnt-orange: #d36546;
+            --mustard: #f2cc8f;
+            --avocado: #81b29a;
+            --deep-brown: #3d405b;
+            --cream: #f4f1de;
+        }
+
+        body {
+            background-color: var(--mustard);
+            background-image: linear-gradient(180deg, var(--burnt-orange) 25%, transparent 25%),
+                linear-gradient(90deg, var(--mustard) 50%, var(--cream) 50%);
+            background-size: 80px 80px;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--deep-brown);
+            margin: 0;
+            padding: 15px;
+        }
+
+        /* Style the code block */
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 50px;
+            border: 1px solid #ccc;
+            font-family: "Courier New", Courier, monospace;
+            white-space: pre-wrap; 
+            word-wrap: break-word; 
+            max-width: 100%; 
+            overflow-x: auto; /* Add horizontal scroll if necessary */
+        }
+
+        /* Optional: Highlighting code */
+        code {
+            display: block;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 95%;
+            margin: 10px auto;
+            background: var(--cream);
+            padding: 20px;
+            border-radius: 30px;
+            border: 6px solid var(--burnt-orange);
+            box-shadow: 10px 10px 0px var(--deep-brown);
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 4px dashed var(--avocado);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin: 10px 0;
+            color: var(--burnt-orange);
+            text-shadow: 2px 2px var(--mustard);
+            line-height: 1;
+        }
+
+        .camper-box {
+            width: auto;
+            height: auto;
+            background: var(--avocado);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid var(--deep-brown);
+        }
+
+        .camper-box img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .post-area {
+            margin-top: 25px;
+        }
+
+        .post-title {
+            font-size: 1.5rem;
+            background: var(--burnt-orange);
+            color: white;
+            display: inline-block;
+            padding: 5px 15px;
+            transform: rotate(-6deg);
+            margin-bottom: 10px;
+        }
+
+        .home-title {
+            font-size: 1.5rem;
+            background: var(--burnt-orange);
+            color: white;
+            display: inline-block;
+            padding: 5px 15px;
+            margin-bottom: 10px;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .links a {
+            text-decoration: none;
+            color: white;
+            background: var(--burnt-orange);
+            border-radius: 999px;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.95rem;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .blog-content {
+            line-height: 1.5;
+            font-size: 1.1rem;
+            padding: 10px;
+            min-height: 150px;
+        }
+
+        /* MEDIA QUERIES for bigger screens */
+        @media (min-width: 600px) {
+            body {
+                padding: 40px;
+            }
+
+            h1 {
+                font-size: 3.5rem;
+            }
+
+            .container {
+                padding: 40px;
+                width: 100%;
+            }
+
+            .post-title {
+                font-size: 2rem;
+            }
+
+            .camper-box {
+                width: auto;
+                height: auto;
+            }
+
+            .camper-box img {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+        }
+
+        .groovy-btn {
+            background: var(--deep-brown);
+            color: var(--cream);
+            padding: 15px 25px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            transition: transform 0.2s;
+        }
+
+        .groovy-btn:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>ESP32 & Arduino</h1>
+            <p><i>GIFs and images on OLED SSD1306 displays</i></p>
+        </header>
+
+        <div class="post-area">
+            <h2 class="post-title">Oh? LED!</h2>
+
+            <div class="blog-content">
+                Let's use our Arduino or ESP32 to display animations and GIFs on a mini OLED display called the SSD1306.
+                This is useful for when you want to add a visual element to your projects!
+                There are a few steps we will need to complete before we are able to display images on our mini screens.
+                It is going to look like a long list, but I have compiled this into as little steps possible.
+                <br><br>
+                Open the Arduino IDE and go to the library manager.
+                Download the Adafruit SSD1306 library. (A library is just code someone else made for you to use in your
+                code.)
+                <div class="camper-box">
+                    <img src="oled1.PNG" alt="">
+                </div>
+                Connect your OLED to your ESP32 or Arduino. 
+                You will have to review your specific ESP32 or Arduino, 
+                but what you're looking for is the SCL (serial clock) and SDA (serial data) pins.
+                <div class="camper-box">
+                    <img src="arduinoSSD1306.PNG" alt="">
+                </div>
+                <br><br>
+                You might ask yourself, "What are SDL and SDA pins for?" 
+                They help you use the Inter-Integrated Circuit (I2C) protocol built into your board, 
+                which in turn lets you use 1 or 2 wires to get the job of multiple data wires done!
+                <br><br>
+                Now that we are wired up, let's go ahead and get our project started. 
+                We are going to make 2 files, one for our code and another for the animation. 
+                We don't really need to, but it keeps things cleaner in the long run. 
+                <br><br>
+                We are going to make a new sketch in Arduino IDE and then save it with a name you will remember. 
+                Next you will want to make a file called "animation.h" (using notepad or VS code)
+                in your arduino project folder that you just made. 
+                <div class="camper-box">
+                    <img src="oled2.PNG" alt="">
+                </div>
+                It is a library of all the images related to your animation/GIF. 
+                We will add our GIF generated code to this file so we can reference it easily.
+                Lets pick a short GIF and generate some code to add to our code library!
+                A good test gif is: https://tenor.com/view/cubefunk-cube-spin-animation-drawing-gif-22979313
+                Right click the GIF, save as a name you remember.
+                <br><br>
+                Now we are going to use 2 websites to help us out. A GIF splitter, and an image to code generator.
+                <br><br>
+                The first one you want to use is: https://ezgif.com/split
+                Upload the GIF you saved, click split frames, and download frames as zip.
+                Extract the zip
+                <br><br>
+                Upload all the frames to: https://javl.github.io/image2cpp/
+                There are a few settings you will want to play with here, especially image size, scaling, brightness, and center image. 
+                Double check the preview screen to make sure you have your settings correct.
+                <div class="camper-box">
+                    <img src="oled3.PNG" alt="">
+                </div>
+                Scroll down, click generate code and paste it into your animation.h file and save it.
+                <br><br>
+                Now back to our main code for the ESP32 or Arduino. 
+                I have made a simple script that uses the animation.h file we made 
+                and goes through all the images in that file smoothly. 
+                Feel free to play with the delay to make it faster or slower. 
+                I will add comments to the code to explain more of it.
+                Paste this code into your arduino sketch(The INO file, not the .h one)
+                <br><br>
+                <pre>
+                    <code>
+//these are called libraries
+#include &lt;Wire.h&gt;
+
+//You get these libraries by using the library manager and hitting install
+//It is used to interact with OLED
+#include &lt;Adafruit_SSD1306.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+
+//This is the file you made for your GIF
+#include "animation.h"
+
+//This is to set the OLED size
+#define WIDTH 128
+#define HEIGHT 64
+Adafruit_SSD1306 display(WIDTH, HEIGHT, &Wire, -1);
+
+//this gets the amount of images from your animation.h file. 
+//In that file you have an array automatically made that holds all your images called : epd_bitmap_allArray
+int frameCountFromGif = sizeof(epd_bitmap_allArray)/sizeof(epd_bitmap_allArray[0]);
+
+void setup() {
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  display.clearDisplay();
+}
+
+//inside this loop, we have a for loop that says 
+//"for each image in the gif, display it, wait 30 milliseconds, clear the display, then move on to the next image"
+void loop() {
+    for (int i = 0; i &lt; frameCountFromGif; i++) {
+    display.clearDisplay();
+    display.drawBitmap(0, 0, epd_bitmap_allArray[i], 128, 64, SSD1306_WHITE);
+    display.display();
+    delay(30);
+  }
+}
+                    </code>
+                </pre>
+                <br><br>
+                Now plug in your Arduino/ESP32, upload the code, and watch the animation play!
+                Try using different GIFs and increase or decrease the speed. 
+                Note the gif will have to be on the shorter side 
+                or it might take up too much space on your Arduino; 
+                when you verify or compile it will throw an error saying too large. 
+                If you REALLY cannot live without the GIF you want, 
+                you can always cut half the images out of your split GIF without it looking too choppy.
+            </div>
+        </div>
+        <div class="links">
+            <a href="../index.html">🏠 Home 🏠</a>
+        </div>
+    </div>
+
+    <script>
+        function home() {
+            //
+        }
+    </script>
+</body>
+
+</html>

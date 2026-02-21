@@ -27,7 +27,7 @@
     body {
       height: 100%;
       margin: 0;
-      overflow: hidden;
+      overflow: auto;
     }
 
     body {
@@ -189,6 +189,7 @@
 
       <div class="links">
         <a href="tools/fuzz.html" class="btn">🎸 Guitar Fuzz 🎸</a>
+        <a href="tools/oledTutorial.html" class="btn">🖥️ Arduino OLED 🖥️</a>
         <a href="tools/reverse.html" class="btn">🚫 Reverse Polarity 🚫</a>
         <a href="tools/Drone.html" class="btn">🎵 Drone Box 🎵</a>
         <a href="tools/ohmsLaw.html" class="btn">🧾 Ohms Law 🧾</a>
@@ -196,86 +197,86 @@
         <a href="tools/voltageDivder.html" class="btn">⚡ Voltage Divider ⚡</a>
       </div>
 
-      <div class="hint">Click the bubbles!</div>
+      <!-- <div class="hint">Click the bubbles!</div> -->
     </div>
   </div>
 
   <script>
-    const layer = document.getElementById("bubble-layer");
+    // const layer = document.getElementById("bubble-layer");
     const isMobile = window.innerWidth < 600;
 
-    function createBubble() {
-      const b = document.createElement("div");
-      const size = Math.random() * (isMobile ? 30 : 50) + 55;
+    // function createBubble() {
+    //   const b = document.createElement("div");
+    //   const size = Math.random() * (isMobile ? 30 : 50) + 55;
 
-      b.className = "bubble";
-      b.style.width = b.style.height = size + "px";
-      b.style.left = Math.random() * 100 + "vw";
-      b.style.animationDuration =
-        (Math.random() * 10 + 16) + "s";
+    //   b.className = "bubble";
+    //   b.style.width = b.style.height = size + "px";
+    //   b.style.left = Math.random() * 100 + "vw";
+    //   b.style.animationDuration =
+    //     (Math.random() * 10 + 16) + "s";
 
-      b.addEventListener("click", () => {
-        b.classList.add("pop");
-        playOhmSound();
-        setTimeout(() => b.remove(), 200);
-      });
+    //   b.addEventListener("click", () => {
+    //     b.classList.add("pop");
+    //     playOhmSound();
+    //     setTimeout(() => b.remove(), 200);
+    //   });
 
-      layer.appendChild(b);
-      setTimeout(() => b.remove(), 30000);
-    }
+    //   layer.appendChild(b);
+    //   setTimeout(() => b.remove(), 30000);
+    // }
 
-    setInterval(createBubble, isMobile ? 900 : 650);
+    // setInterval(createBubble, isMobile ? 900 : 650);
 
-    let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-    const attackTime = 0.1;
-    const releaseTime = 0.9;
+    // const attackTime = 0.1;
+    // const releaseTime = 0.9;
 
-    // Function to play the tone
-    function playTone(audioCtx, frequency, startTime, duration, maxGain, attack, release) {
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
+    // // Function to play the tone
+    // function playTone(audioCtx, frequency, startTime, duration, maxGain, attack, release) {
+    //   const osc = audioCtx.createOscillator();
+    //   const gain = audioCtx.createGain();
 
-      osc.type = 'sine'; 
-      osc.frequency.setValueAtTime(frequency, startTime);
+    //   osc.type = 'sine'; 
+    //   osc.frequency.setValueAtTime(frequency, startTime);
 
-      gain.gain.setValueAtTime(0, startTime); 
-      gain.gain.linearRampToValueAtTime(maxGain, startTime + attack); 
-      gain.gain.setValueAtTime(maxGain, startTime + duration - release); 
-      gain.gain.linearRampToValueAtTime(0, startTime + duration); 
+    //   gain.gain.setValueAtTime(0, startTime); 
+    //   gain.gain.linearRampToValueAtTime(maxGain, startTime + attack); 
+    //   gain.gain.setValueAtTime(maxGain, startTime + duration - release); 
+    //   gain.gain.linearRampToValueAtTime(0, startTime + duration); 
 
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
+    //   osc.connect(gain);
+    //   gain.connect(audioCtx.destination);
 
-      osc.start(startTime);
-      osc.stop(startTime + duration);
-    }
+    //   osc.start(startTime);
+    //   osc.stop(startTime + duration);
+    // }
 
-    function playOhmSound() {
-      const now = audioCtx.currentTime;
-      const frequency = pickRandomNote();
-      const duration = 1; 
-      const maxGain = 0.5; 
-      playTone(audioCtx, frequency, now, duration, maxGain, attackTime, releaseTime);
-    }
+    // function playOhmSound() {
+    //   const now = audioCtx.currentTime;
+    //   const frequency = pickRandomNote();
+    //   const duration = 1; 
+    //   const maxGain = 0.5; 
+    //   playTone(audioCtx, frequency, now, duration, maxGain, attackTime, releaseTime);
+    // }
 
-    function pickRandomNote() {
-      const array = [
-        369.99,
-        415.30,
-        466.16,
-        311.13,
-        369.99,
-        155.56,
-        277.18,
-        554.37,
-        622.25,
-        185.00,
-        207.65,
-        233.08
-      ];
-      return array[Math.floor(Math.random() * array.length)];
-    }
+    // function pickRandomNote() {
+    //   const array = [
+    //     369.99,
+    //     415.30,
+    //     466.16,
+    //     311.13,
+    //     369.99,
+    //     155.56,
+    //     277.18,
+    //     554.37,
+    //     622.25,
+    //     185.00,
+    //     207.65,
+    //     233.08
+    //   ];
+    //   return array[Math.floor(Math.random() * array.length)];
+    // }
   </script>
 
 </body>
