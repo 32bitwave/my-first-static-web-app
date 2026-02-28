@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Code Blocks</title>
+    <style>
+        :root {
+            --bg-main: #f5efe6;
+            --panel-left: #4b2e2b;
+            --panel-right: #d7ccc8;
+            --card-primary: #6f4e37;
+            --card-hover: #8b5e3c;
+            --card-secondary: #a1887f;
+            --border-accent: #6f4e37;
+            --button-dark: #3e2723;
+            --button-hover: #5d4037;
+            --text-light: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-main);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .title-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: var(--text-light);
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+        }
+
+        .panel {
+            flex: 1;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .left {
+            background-color: var(--panel-left);
+            color: var(--text-light);
+        }
+
+        .right {
+            background-color: var(--panel-right);
+        }
+
+        .drag-item {
+            background-color: var(--card-primary);
+            padding: 12px;
+            margin-bottom: 5px;
+            margin-top: 5px;
+            border-radius: 6px;
+            cursor: grab;
+            color: var(--text-light);
+            user-select: none;
+            transition: background 0.2s ease;
+        }
+
+        .drag-item:hover {
+            background-color: var(--card-hover);
+        }
+
+        .drop-zone {
+            min-height: 300px;
+            border: 2px dashed var(--border-accent);
+            padding: 15px;
+            border-radius: 8px;
+            background-color: var(--bg-main);
+        }
+
+        .dropped-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--card-secondary);
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            color: var(--text-light);
+            cursor: grab;
+        }
+
+        .delete-btn {
+            background-color: var(--button-dark);
+            border: none;
+            color: var(--text-light);
+            padding: 5px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.2s ease;
+        }
+
+        .delete-btn:hover {
+            background-color: var(--button-hover);
+        }
+
+        .bottom-bar {
+            padding: 15px;
+            background-color: var(--button-dark);
+            text-align: center;
+        }
+
+        button {
+            background-color: var(--card-primary);
+            color: var(--text-light);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.2s ease;
+        }
+
+        button:hover {
+            background-color: var(--card-hover);
+        }
+
+        .output-container {
+            padding: 20px;
+            background-color: var(--panel-right);
+            border-top: 2px solid var(--border-accent);
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .output-header h3 {
+            margin: 0;
+        }
+
+        pre {
+            background-color: #2b2b2b;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        #copyBtn {
+            background-color: var(--card-primary);
+            color: var(--text-light);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s ease;
+        }
+
+        #copyBtn:hover {
+            background-color: var(--card-hover);
+        }
+
+        code {
+            white-space: pre-wrap;
+        }
+
+        .clearBtn {
+            background-color: var(--button-dark);
+            font-size: 12px;
+            margin-top: 5px;
+            border-radius: 100px;
+        }
+
+        .drink-list {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        /* Custom Scrollbar (Chrome, Edge, Safari) */
+        .drink-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .drink-list::-webkit-scrollbar-track {
+            background: var(--panel-left);
+        }
+
+        .drink-list::-webkit-scrollbar-thumb {
+            background-color: var(--card-hover);
+            border-radius: 4px;
+        }
+
+        /* Firefox stufff */
+        .drink-list {
+            scrollbar-width: thin;
+            scrollbar-color: var(--card-hover) var(--panel-left);
+        }
+
+        .collapsible {
+            background-color: var(--card-primary);
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .active,
+        .collapsible:hover {
+            background-color: var(--card-hover);
+        }
+
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: var(--card-secondary);
+        }
+
+        .camper-box {
+            width: auto;
+            height: auto;
+        }
+
+        .camper-box img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 30px;
+        }
+
+        .starter-container {
+            max-width: 800px;
+            width: 95%;
+            margin: 10px auto;
+            background: var(--bg-main);
+            padding: 20px;
+            border-radius: 30px;
+            border: 6px solid var(--border-accent);
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title-div">
+        <h2 class="title-text">Arduino Code Generator (beta v0.0.1)</h2>
+    </div>
+    <div class="container">
+        <div class="panel left">
+            <h2>Code Blocks</h2>
+            <div class="drink-list">
+                <button type="button" class="collapsible">LED Blocks</button>
+                <div class="content">
+                    <div class="drag-item" draggable="true" data-key="enableLED">Enable LED</div>
+                    <div class="drag-item" draggable="true" data-key="ledOn">Turn LED On</div>
+                    <div class="drag-item" draggable="true" data-key="ledOff">Turn LED Off</div>
+                </div>
+                <button type="button" class="collapsible">Timer Blocks</button>
+                <div class="content">
+                    <div class="drag-item" draggable="true" data-key="WaitOneSec">Wait 1 Second</div>
+                    <div class="drag-item" draggable="true" data-key="WaitThreeSec">Wait 3 Seconds</div>
+                </div>
+                <button type="button" class="collapsible">Button Blocks</button>
+                <div class="content">
+                    <div class="drag-item" draggable="true" data-key="enableButton">Enable Button</div>
+                    <div class="drag-item" draggable="true" data-key="ifButtonStart">IF Button Pressed</div>
+                    <div class="drag-item" draggable="true" data-key="ifButtonEnd">END IF</div>
+                </div>
+                <button type="button" class="collapsible">Potentiometer Blocks</button>
+                <div class="content">
+                    <div class="drag-item" draggable="true" data-key="enablePotentiometer">Enable Potentiometer</div>
+                    <div class="drag-item" draggable="true" data-key="ifPotentiometer100Start">IF 100%</div>
+                    <div class="drag-item" draggable="true" data-key="ifPotentiometer50Start">IF 50%</div>
+                    <div class="drag-item" draggable="true" data-key="ifPotentiometer25Start">IF 25%</div>
+                    <div class="drag-item" draggable="true" data-key="ifPotentiometerEnd">END IF</div>
+                </div>
+                <button type="button" class="collapsible">Logic Blocks</button>
+                <div class="content">
+                    <div class="drag-item" draggable="true" data-key="elseStart">Else</div>
+                    <div class="drag-item" draggable="true" data-key="elseEnd">End Else</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel right">
+            <h2>Drag Here!</h2>
+            <div class="drop-zone" id="dropZone"></div>
+            <button class="clearBtn" onclick="clearWorkspace()">Clear Code</button>
+        </div>
+    </div>
+
+    <div class="output-container">
+        <div class="output-header">
+            <h3>Code:</h3>
+            <button id="copyBtn">Copy</button>
+        </div>
+        <pre><code id="outputBox">Start making code!</code></pre>
+    </div>
+    <div class="starter-container">
+        <div class="camper-box">
+            <img src="codeGenArduinoStarter.PNG" alt="70s Van">
+        </div>
+    </div>
+
+    <!-- <div class="bottom-bar">
+        <button onclick="printDropContents()">Generate Code</button>
+    </div> -->
+
+    <script>
+        //CATALOG
+        const catalog = {
+            //LED
+            ledOn: {
+                name: "Turn LED On",
+                description: "digitalWrite(LED_PIN, HIGH);",
+                position: "loop"
+            },
+            ledOff: {
+                name: "Turn LED Off",
+                description: "digitalWrite(LED_PIN, LOW);",
+                position: "loop"
+            },
+            enableLED: {
+                name: "Enable LED",
+                description: "pinMode(LED_PIN, OUTPUT);",
+                headerDescription: "#define LED_PIN 8",
+                position: "start"
+            },
+
+            //timers
+            WaitOneSec: {
+                name: "Wait 1 Second",
+                description: "delay(1000);",
+                position: "loop"
+            },
+            WaitThreeSec: {
+                name: "Wait 3 Seconds",
+                description: "delay(3000);",
+                position: "loop"
+            },
+
+            //buttons
+            ifButtonStart: {
+                name: "IF (Button Pressed) THEN...",
+                description: "if (digitalRead(4) == LOW) {",
+                position: "loop"
+            },
+            ifButtonEnd: {
+                name: "END IF",
+                description: "}",
+                position: "loop"
+            },
+            enableButton: {
+                name: "Enable Button",
+                description: "pinMode(BUTTON_PIN, INPUT_PULLUP);",
+                headerDescription: "#define BUTTON_PIN 4",
+                position: "start"
+            },
+
+            //pots
+            ifPotentiometer100Start: {
+                name: "IF (Pot more than 90) THEN...",
+                description: "if (potVal > 90) {",
+                position: "loop"
+            },
+            ifPotentiometer50Start: {
+                name: "IF (Pot more than 50) THEN...",
+                description: "if (potVal > 50) {",
+                position: "loop"
+            },
+            ifPotentiometer25Start: {
+                name: "IF (Pot more than 25) THEN...",
+                description: "if (potVal > 25) {",
+                position: "loop"
+            },
+            ifPotentiometerEnd: {
+                name: "END IF",
+                description: "}",
+                position: "loop"
+            },
+            enablePotentiometer: {
+                name: "Enable Potentiometer",
+                description: "potVal = analogRead(potPin)/10.24;",
+                headerDescription: "int potPin = A3;\nint potVal = 0;",
+                position: "loop"
+            },
+
+            //logic blocks
+            elseEnd: {
+                name: "END ELSE",
+                description: "}",
+                position: "loop"
+            },
+            elseStart: {
+                name: "ELSE",
+                description: "else {",
+                position: "loop"
+            }
+        };
+
+        let droppedItems = [];
+        let draggedId = null;
+
+        const dropZone = document.getElementById("dropZone");
+        const dragItems = document.querySelectorAll(".drag-item");
+
+        //DRAG
+        dragItems.forEach(item => {
+            item.addEventListener("dragstart", e => {
+                e.dataTransfer.setData("text/plain", item.dataset.key);
+                draggedId = null;
+            });
+        });
+
+        //DROP
+        dropZone.addEventListener("dragover", e => e.preventDefault());
+
+        dropZone.addEventListener("drop", e => {
+            e.preventDefault();
+            const key = e.dataTransfer.getData("text/plain");
+
+            if (catalog[key]) {
+                droppedItems.push({
+                    id: Date.now() + Math.random(),
+                    ...catalog[key]
+                });
+                render();
+            }
+        });
+
+        //RENDER
+        function render() {
+            dropZone.innerHTML = "";
+
+            droppedItems.forEach((item, index) => {
+                const div = document.createElement("div");
+                div.classList.add("dropped-item");
+                div.draggable = true;
+
+                div.innerHTML = `
+            <span>${item.name}</span>
+            <button class="delete-btn">Delete</button>
+        `;
+
+                div.addEventListener("dragstart", () => {
+                    draggedId = item.id;
+                });
+
+                div.addEventListener("dragover", e => {
+                    e.preventDefault();
+                    const draggedIndex = droppedItems.findIndex(i => i.id === draggedId);
+                    if (draggedIndex !== index) {
+                        const moved = droppedItems.splice(draggedIndex, 1)[0];
+                        droppedItems.splice(index, 0, moved);
+                        render();
+                    }
+                });
+
+                div.querySelector(".delete-btn").onclick = () => {
+                    droppedItems = droppedItems.filter(i => i.id !== item.id);
+                    render();
+                };
+
+                dropZone.appendChild(div);
+            });
+            printDropContents();
+        }
+
+        //PRINT 
+        function printDropContents() {
+            const outputBox = document.getElementById("outputBox");
+            if (droppedItems.length === 0) {
+                outputBox.textContent = "No code to generate!";
+                return;
+            }
+            let headCode = "\n";
+            let setupCode = "void setup() {\n";
+            let loopCode = "void loop() {\n";
+
+            // If spaces code
+            let indentLevel = 1;
+
+            droppedItems.forEach((item) => {
+
+                if (`${item.headerDescription}` !== "undefined") {
+                    headCode += `${item.headerDescription}\n`;
+                }
+
+                if (item.position === "start") {
+                    setupCode += `    ${item.description}\n`;
+                }
+
+                if (item.position === "loop") {
+                    // If this is an END block move indentation back BEFORE printing
+                    if (item.name === "END IF") indentLevel--;
+                    if (item.name === "END ELSE") indentLevel--;
+                    //create space
+                    let spaces = "    ".repeat(indentLevel);
+                    loopCode += `${spaces}${item.description}\n`;
+
+                    //START block
+                    if (item.name.includes("THEN")) indentLevel++;
+                    if (item.name.includes("ELSE")) indentLevel++;
+                }
+            });
+            headCode += "";
+            setupCode += "}\n";
+            loopCode += "}\n";
+
+            outputBox.textContent = headCode + "\n" + setupCode + "\n" + loopCode;
+        }
+
+        const copyBtn = document.getElementById("copyBtn");
+        const outputBox = document.getElementById("outputBox");
+
+        copyBtn.addEventListener("click", async () => {
+            const text = outputBox.textContent;
+
+            if (!text.trim()) return;
+
+            try {
+                await navigator.clipboard.writeText(text);
+
+                copyBtn.textContent = "Copied!";
+                setTimeout(() => {
+                    copyBtn.textContent = "Copy";
+                }, 1200);
+            } catch (err) {
+                console.error("Copy failed", err);
+            }
+        });
+
+        function clearWorkspace() {
+            if (confirm("Are you sure you want to delete all your blocks?")) {
+                droppedItems = []; // Empty the array
+                render();          // Clear the visual drop zone
+                document.getElementById("outputBox").textContent = "// Your selection will appear here...";
+            }
+        }
+
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        } 
+    </script>
+
+</body>
+
+</html>
