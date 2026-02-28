@@ -548,11 +548,9 @@
         });
 
         function clearWorkspace() {
-            if (confirm("Are you sure you want to delete all your blocks?")) {
-                droppedItems = []; // Empty the array
-                render();          // Clear the visual drop zone
-                document.getElementById("outputBox").textContent = "// Your selection will appear here...";
-            }
+            droppedItems = []; // Empty the array
+            render();          // Clear the visual drop zone
+            document.getElementById("outputBox").textContent = "Generate Some Code!";
         }
 
         var coll = document.getElementsByClassName("collapsible");
