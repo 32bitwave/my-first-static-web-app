@@ -3,80 +3,144 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Code Blocks</title>
+    <title>STEM Code Generator</title>
     <style>
         :root {
-            --bg-main: #f5efe6;
-            --panel-left: #4b2e2b;
-            --panel-right: #d7ccc8;
-            --card-primary: #6f4e37;
-            --card-hover: #8b5e3c;
-            --card-secondary: #a1887f;
-            --border-accent: #6f4e37;
-            --button-dark: #3e2723;
-            --button-hover: #5d4037;
-            --text-light: #ffffff;
+            --arduino-teal: #00878f;
+            --arduino-blue: #00979d;
+            --arduino-teal-dark: #005f66;
+            --bg-main: #f1f1f1;
+            --bg-panel: #ffffff;
+            --bg-editor: #232525;
+            --bg-collapsible: #e3e8e8;
+            --text-main: #232525;
+            --text-on-teal: #ffffff;
+            --text-code: #00ca9a;
+            --border-ui: #d1d8d8;
+            --color-danger: #d9534f;
+            --cat-led: #e67e22;
+            --cat-timer: #9b59b6;
+            --cat-button: #3498db;
+            --cat-pot: #27ae60;
+            --cat-logic: #f1c40f;
         }
 
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
             background-color: var(--bg-main);
+            color: var(--text-main);
             display: flex;
             flex-direction: column;
             height: 100vh;
+            overflow: hidden;
         }
 
         .title-div {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: var(--arduino-teal);
+            color: var(--text-on-teal);
             text-align: center;
-            background: var(--text-light);
+            border-bottom: 4px solid var(--arduino-blue);
+            flex-shrink: 0;
         }
 
-        .container {
-            flex: 1;
+        .main-container {
             display: flex;
+            flex: 1;
+            overflow: hidden;
+            flex-direction: row;
         }
 
         .panel {
-            flex: 1;
             padding: 20px;
             box-sizing: border-box;
             overflow-y: auto;
+            position: relative;
         }
 
-        .left {
-            background-color: var(--panel-left);
-            color: var(--text-light);
+        #catalogPanel {
+            width: 300px;
+            min-width: 250px;
+            background-color: var(--bg-main);
         }
 
-        .right {
-            background-color: var(--panel-right);
+        #workspacePanel {
+            flex: 1;
+            min-width: 400px;
+            background-color: var(--bg-panel);
+        }
+
+        #codePanel {
+            width: 400px;
+            min-width: 400px;
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border-ui);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .resizer-h {
+            width: 10px;
+            cursor: col-resize;
+            background: var(--arduino-blue);
+            flex-shrink: 0;
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+            border-right: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .cat-led {
+            --block-color: var(--cat-led);
+        }
+
+        .cat-timer {
+            --block-color: var(--cat-timer);
+        }
+
+        .cat-button {
+            --block-color: var(--cat-button);
+        }
+
+        .cat-pot {
+            --block-color: var(--cat-pot);
+        }
+
+        .cat-logic {
+            --block-color: var(--cat-logic);
         }
 
         .drag-item {
-            background-color: var(--card-primary);
-            padding: 12px;
-            margin-bottom: 5px;
-            margin-top: 5px;
-            border-radius: 6px;
+            background-color: var(--block-color, var(--arduino-teal));
+            color: white;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
             cursor: grab;
-            color: var(--text-light);
-            user-select: none;
-            transition: background 0.2s ease;
+            font-weight: 600;
         }
 
-        .drag-item:hover {
-            background-color: var(--card-hover);
+        .collapsible {
+            background-color: var(--bg-collapsible);
+            color: var(--arduino-teal);
+            cursor: pointer;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 1px solid var(--border-ui);
+        }
+
+        .content {
+            display: none;
+            padding: 5px;
+            background: var(--bg-panel);
         }
 
         .drop-zone {
-            min-height: 300px;
-            border: 2px dashed var(--border-accent);
-            padding: 15px;
+            min-height: 100%;
+            border: 2px dashed var(--border-ui);
             border-radius: 8px;
+            padding: 25px 15px;
             background-color: var(--bg-main);
         }
 
@@ -84,491 +148,360 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: var(--card-secondary);
-            padding: 10px;
-            margin-bottom: 8px;
-            border-radius: 5px;
-            color: var(--text-light);
+            background-color: var(--block-color, var(--arduino-teal));
+            color: white;
+            padding: 12px 15px;
+            margin-bottom: 12px;
             cursor: grab;
-        }
-
-        .delete-btn {
-            background-color: var(--button-dark);
-            border: none;
-            color: var(--text-light);
-            padding: 5px 8px;
+            font-weight: 600;
+            position: relative;
             border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: background 0.2s ease;
         }
 
-        .delete-btn:hover {
-            background-color: var(--button-hover);
+        .dropped-item.dragging {
+            opacity: 0.5;
         }
 
-        .bottom-bar {
-            padding: 15px;
-            background-color: var(--button-dark);
-            text-align: center;
+        .dropped-item::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: 30px;
+            width: 40px;
+            height: 8px;
+            background: var(--bg-panel);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-top: none;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
         }
 
-        button {
-            background-color: var(--card-primary);
-            color: var(--text-light);
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.2s ease;
+        .dropped-item::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 30px;
+            width: 40px;
+            height: 10px;
+            background: var(--block-color);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-top: none;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            z-index: 1;
         }
 
-        button:hover {
-            background-color: var(--card-hover);
-        }
-
-        .output-container {
-            padding: 20px;
-            background-color: var(--panel-right);
-            border-top: 2px solid var(--border-accent);
-        }
-
-        .output-header {
+        .code-header {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 10px;
+            padding-bottom: 10px;
         }
 
-        .output-header h3 {
-            margin: 0;
+        .btn-group {
+            display: flex;
+            gap: 5px;
         }
 
         pre {
-            background-color: #2b2b2b;
-            color: #f8f8f2;
+            background-color: var(--bg-editor);
+            color: var(--text-code);
             padding: 15px;
-            border-radius: 6px;
-            overflow-x: auto;
-            font-family: Consolas, monospace;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-
-        #copyBtn {
-            background-color: var(--card-primary);
-            color: var(--text-light);
-            border: none;
-            padding: 6px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.2s ease;
-        }
-
-        #copyBtn:hover {
-            background-color: var(--card-hover);
-        }
-
-        code {
-            white-space: pre-wrap;
-        }
-
-        .clearBtn {
-            background-color: var(--button-dark);
-            font-size: 12px;
-            margin-top: 5px;
-            border-radius: 100px;
-        }
-
-        .drink-list {
-            max-height: calc(100vh - 200px);
-            overflow-y: auto;
-            padding-right: 6px;
-        }
-
-        /* Custom Scrollbar (Chrome, Edge, Safari) */
-        .drink-list::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .drink-list::-webkit-scrollbar-track {
-            background: var(--panel-left);
-        }
-
-        .drink-list::-webkit-scrollbar-thumb {
-            background-color: var(--card-hover);
+            margin: 0;
             border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            border-left: 6px solid var(--arduino-teal);
+            overflow: auto;
+            flex: 1;
         }
 
-        /* Firefox stufff */
-        .drink-list {
-            scrollbar-width: thin;
-            scrollbar-color: var(--card-hover) var(--panel-left);
-        }
-
-        .collapsible {
-            background-color: var(--card-primary);
-            color: var(--text-light);
-            cursor: pointer;
-            padding: 18px;
-            width: 100%;
+        .arduino-btn {
+            background: var(--arduino-teal);
+            color: white;
             border: none;
-            text-align: left;
-            outline: none;
-            font-size: 15px;
-            margin-top: 10px;
-            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
         }
 
-        .active,
-        .collapsible:hover {
-            background-color: var(--card-hover);
+        .delete-btn {
+            background: var(--color-danger);
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            z-index: 2;
         }
 
-        .content {
-            padding: 0 18px;
-            display: none;
-            overflow: hidden;
-            background-color: var(--card-secondary);
+        .section-head{
+            display:flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom:10px;
         }
 
-        .camper-box {
-            width: auto;
-            height: auto;
-        }
-
-        .camper-box img {
-            width: 100%;
-            height: 100%;
-            display: block;
-            border-radius: 30px;
-        }
-
-        .starter-container {
-            max-width: 800px;
-            width: 95%;
-            margin: 10px auto;
-            background: var(--bg-main);
-            padding: 20px;
-            border-radius: 30px;
-            border: 6px solid var(--border-accent);
-            box-sizing: border-box;
+        .section-buttons{
+            display: flex; 
+            gap: 10px;
         }
     </style>
 </head>
 
 <body>
     <div class="title-div">
-        <h2 class="title-text">Arduino Code Generator (beta v0.0.1)</h2>
+        <h3>Code Blocks - Interactive STEM Learning</h3>
     </div>
-    <div class="container">
-        <div class="panel left">
-            <h2>Code Blocks</h2>
-            <div class="drink-list">
-                <button type="button" class="collapsible">LED Blocks</button>
-                <div class="content">
-                    <div class="drag-item" draggable="true" data-key="enableLED">Enable LED</div>
-                    <div class="drag-item" draggable="true" data-key="ledOn">Turn LED On</div>
-                    <div class="drag-item" draggable="true" data-key="ledOff">Turn LED Off</div>
+
+    <div class="main-container">
+        <div class="panel" id="catalogPanel">
+            <h3>Building Blocks</h3>
+
+            <button class="collapsible">LED Blocks</button>
+            <div class="content">
+                <div class="drag-item cat-led" draggable="true" data-key="enableLED">Enable LED</div>
+                <div class="drag-item cat-led" draggable="true" data-key="ledOn">Turn LED On</div>
+                <div class="drag-item cat-led" draggable="true" data-key="ledOff">Turn LED Off</div>
+            </div>
+
+            <button class="collapsible">Timer Blocks</button>
+            <div class="content">
+                <div class="drag-item cat-timer" draggable="true" data-key="WaitOneSec">Wait 1 Second</div>
+                <div class="drag-item cat-timer" draggable="true" data-key="WaitThreeSec">Wait 3 Seconds</div>
+            </div>
+
+            <button class="collapsible">Button Blocks</button>
+            <div class="content">
+                <div class="drag-item cat-button" draggable="true" data-key="enableButton">Enable Button</div>
+                <div class="drag-item cat-button" draggable="true" data-key="ifButtonStart">IF Button Pressed</div>
+                <div class="drag-item cat-button" draggable="true" data-key="ifButtonEnd">END IF</div>
+            </div>
+
+            <button class="collapsible">Potentiometer Blocks</button>
+            <div class="content">
+                <div class="drag-item cat-pot" draggable="true" data-key="enablePotentiometer">Enable Potentiometer
                 </div>
-                <button type="button" class="collapsible">Timer Blocks</button>
-                <div class="content">
-                    <div class="drag-item" draggable="true" data-key="WaitOneSec">Wait 1 Second</div>
-                    <div class="drag-item" draggable="true" data-key="WaitThreeSec">Wait 3 Seconds</div>
-                </div>
-                <button type="button" class="collapsible">Button Blocks</button>
-                <div class="content">
-                    <div class="drag-item" draggable="true" data-key="enableButton">Enable Button</div>
-                    <div class="drag-item" draggable="true" data-key="ifButtonStart">IF Button Pressed</div>
-                    <div class="drag-item" draggable="true" data-key="ifButtonEnd">END IF</div>
-                </div>
-                <button type="button" class="collapsible">Potentiometer Blocks</button>
-                <div class="content">
-                    <div class="drag-item" draggable="true" data-key="enablePotentiometer">Enable Potentiometer</div>
-                    <div class="drag-item" draggable="true" data-key="ifPotentiometer100Start">IF 100%</div>
-                    <div class="drag-item" draggable="true" data-key="ifPotentiometer50Start">IF 50%</div>
-                    <div class="drag-item" draggable="true" data-key="ifPotentiometer25Start">IF 25%</div>
-                    <div class="drag-item" draggable="true" data-key="ifPotentiometerEnd">END IF</div>
-                </div>
-                <button type="button" class="collapsible">Logic Blocks</button>
-                <div class="content">
-                    <div class="drag-item" draggable="true" data-key="elseStart">Else</div>
-                    <div class="drag-item" draggable="true" data-key="elseEnd">End Else</div>
-                </div>
+                <div class="drag-item cat-pot" draggable="true" data-key="ifPotentiometer100Start">IF 100%</div>
+                <div class="drag-item cat-pot" draggable="true" data-key="ifPotentiometerEnd">END IF</div>
+            </div>
+
+            <button class="collapsible">Logic Blocks</button>
+            <div class="content">
+                <div class="drag-item cat-logic" draggable="true" data-key="elseStart">Else</div>
+                <div class="drag-item cat-logic" draggable="true" data-key="elseEnd">End Else</div>
             </div>
         </div>
 
-        <div class="panel right">
-            <h2>Drag Here!</h2>
+        <div class="resizer-h" id="resizerH1"></div>
+
+        <div class="panel" id="workspacePanel">
+            <div class="section-head">
+                <h3>Drag Here!</h3>
+                <div class="section-buttons">
+                    <button class="arduino-btn" onclick="saveProject()"
+                        style="background:var(--arduino-blue)">Save</button>
+                    <button class="arduino-btn" onclick="document.getElementById('fileIn').click()"
+                        style="background:var(--arduino-blue)">Upload</button>
+                    <button class="arduino-btn" onclick="clearWorkspace()" style="background:#c91818">Clear All</button>
+                </div>
+                <input type="file" id="fileIn" style="display:none" accept=".json" onchange="uploadProject(this)">
+            </div>
             <div class="drop-zone" id="dropZone"></div>
-            <button class="clearBtn" onclick="clearWorkspace()">Clear Code</button>
         </div>
-    </div>
 
-    <div class="output-container">
-        <div class="output-header">
-            <h3>Code:</h3>
-            <button id="copyBtn">Copy</button>
-        </div>
-        <pre><code id="outputBox">Start making code!</code></pre>
-    </div>
-    <div class="starter-container">
-        <div class="camper-box">
-            <img src="codeGenArduinoStarter.PNG" alt="70s Van">
-        </div>
-    </div>
+        <div class="resizer-h" id="resizerH2"></div>
 
-    <!-- <div class="bottom-bar">
-        <button onclick="printDropContents()">Generate Code</button>
-    </div> -->
+        <div class="panel" id="codePanel">
+            <div class="section-head">
+                <h3>Your Code:</h3>
+                <div class="section-buttons">
+                    <button class="arduino-btn" id="copyBtn">Copy Code</button>
+                    <button class="arduino-btn" id="downloadBtn">Download Sketch</button>
+                </div>
+            </div>
+            <pre><code id="outputBox">// Generate Some Code!</code></pre>
+        </div>
+    </div>
 
     <script>
-        //CATALOG
         const catalog = {
-            //LED
-            ledOn: {
-                name: "Turn LED On",
-                description: "digitalWrite(LED_PIN, HIGH);",
-                position: "loop"
-            },
-            ledOff: {
-                name: "Turn LED Off",
-                description: "digitalWrite(LED_PIN, LOW);",
-                position: "loop"
-            },
-            enableLED: {
-                name: "Enable LED",
-                description: "pinMode(LED_PIN, OUTPUT);",
-                headerDescription: "#define LED_PIN 8",
-                position: "start"
-            },
-
-            //timers
-            WaitOneSec: {
-                name: "Wait 1 Second",
-                description: "delay(1000);",
-                position: "loop"
-            },
-            WaitThreeSec: {
-                name: "Wait 3 Seconds",
-                description: "delay(3000);",
-                position: "loop"
-            },
-
-            //buttons
-            ifButtonStart: {
-                name: "IF (Button Pressed) THEN...",
-                description: "if (digitalRead(4) == LOW) {",
-                position: "loop"
-            },
-            ifButtonEnd: {
-                name: "END IF",
-                description: "}",
-                position: "loop"
-            },
-            enableButton: {
-                name: "Enable Button",
-                description: "pinMode(BUTTON_PIN, INPUT_PULLUP);",
-                headerDescription: "#define BUTTON_PIN 4",
-                position: "start"
-            },
-
-            //pots
-            ifPotentiometer100Start: {
-                name: "IF (Pot more than 90) THEN...",
-                description: "if (potVal > 90) {",
-                position: "loop"
-            },
-            ifPotentiometer50Start: {
-                name: "IF (Pot more than 50) THEN...",
-                description: "if (potVal > 50) {",
-                position: "loop"
-            },
-            ifPotentiometer25Start: {
-                name: "IF (Pot more than 25) THEN...",
-                description: "if (potVal > 25) {",
-                position: "loop"
-            },
-            ifPotentiometerEnd: {
-                name: "END IF",
-                description: "}",
-                position: "loop"
-            },
-            enablePotentiometer: {
-                name: "Enable Potentiometer",
-                description: "potVal = analogRead(potPin)/10.24;",
-                headerDescription: "int potPin = A3;\nint potVal = 0;",
-                position: "loop"
-            },
-
-            //logic blocks
-            elseEnd: {
-                name: "END ELSE",
-                description: "}",
-                position: "loop"
-            },
-            elseStart: {
-                name: "ELSE",
-                description: "else {",
-                position: "loop"
-            }
+            ledOn: { name: "Turn LED On", description: "digitalWrite(LED_PIN, HIGH);", position: "loop" },
+            ledOff: { name: "Turn LED Off", description: "digitalWrite(LED_PIN, LOW);", position: "loop" },
+            enableLED: { name: "Enable LED", description: "pinMode(LED_PIN, OUTPUT);", headerDescription: "#define LED_PIN 8", position: "start" },
+            WaitOneSec: { name: "Wait 1 Second", description: "delay(1000);", position: "loop" },
+            WaitThreeSec: { name: "Wait 3 Seconds", description: "delay(3000);", position: "loop" },
+            ifButtonStart: { name: "IF (Button)", description: "if (digitalRead(4) == LOW) {", position: "loop", indent: 1 },
+            ifButtonEnd: { name: "END IF", description: "}", position: "loop", indent: -1 },
+            enableButton: { name: "Enable Button", description: "pinMode(BUTTON_PIN, INPUT_PULLUP);", headerDescription: "#define BUTTON_PIN 4", position: "start" },
+            enablePotentiometer: { name: "Enable Pot", description: "potVal = analogRead(potPin)/10.24;", headerDescription: "int potPin = A3;\nint potVal = 0;", position: "loop" },
+            ifPotentiometer100Start: { name: "IF (Pot > 90)", description: "if (potVal > 90) {", position: "loop", indent: 1 },
+            ifPotentiometerEnd: { name: "END IF", description: "}", position: "loop", indent: -1 },
+            elseStart: { name: "ELSE", description: "else {", position: "loop", indent: 1 },
+            elseEnd: { name: "END ELSE", description: "}", position: "loop", indent: -1 },
         };
 
         let droppedItems = [];
-        let draggedId = null;
+
+        //resizing
+        const r1 = document.getElementById('resizerH1'), r2 = document.getElementById('resizerH2');
+        const p1 = document.getElementById('catalogPanel'), p3 = document.getElementById('codePanel');
+
+        r1.addEventListener('mousedown', () => {
+            const move = (e) => p1.style.width = e.clientX + 'px';
+            document.addEventListener('mousemove', move);
+            document.addEventListener('mouseup', () => document.removeEventListener('mousemove', move), { once: true });
+        });
+
+        r2.addEventListener('mousedown', () => {
+            const move = (e) => p3.style.width = (window.innerWidth - e.clientX) + 'px';
+            document.addEventListener('mousemove', move);
+            document.addEventListener('mouseup', () => document.removeEventListener('mousemove', move), { once: true });
+        });
+
+        //Drag&Drop
+        document.addEventListener("dragstart", (e) => {
+            if (e.target.classList.contains("drag-item")) {
+                e.dataTransfer.setData("text/plain", e.target.dataset.key);
+                e.dataTransfer.setData("source", "catalog");
+            } else if (e.target.classList.contains("dropped-item")) {
+                e.dataTransfer.setData("text/plain", e.target.dataset.id);
+                e.dataTransfer.setData("source", "workspace");
+                e.target.classList.add("dragging");
+            }
+        });
+
+        document.addEventListener("dragend", (e) => {
+            if (e.target.classList.contains("dropped-item")) {
+                e.target.classList.remove("dragging");
+            }
+        });
 
         const dropZone = document.getElementById("dropZone");
-        const dragItems = document.querySelectorAll(".drag-item");
+        dropZone.addEventListener("dragover", (e) => { e.preventDefault(); });
 
-        //DRAG
-        dragItems.forEach(item => {
-            item.addEventListener("dragstart", e => {
-                e.dataTransfer.setData("text/plain", item.dataset.key);
-                draggedId = null;
-            });
-        });
-
-        //DROP
-        dropZone.addEventListener("dragover", e => e.preventDefault());
-
-        dropZone.addEventListener("drop", e => {
+        dropZone.addEventListener("drop", (e) => {
             e.preventDefault();
-            const key = e.dataTransfer.getData("text/plain");
+            const source = e.dataTransfer.getData("source");
+            const val = e.dataTransfer.getData("text/plain");
 
-            if (catalog[key]) {
-                droppedItems.push({
-                    id: Date.now() + Math.random(),
-                    ...catalog[key]
-                });
-                render();
+            //calculate drop position
+            const afterElement = getDragAfterElement(dropZone, e.clientY);
+            const allUIElements = [...dropZone.querySelectorAll(".dropped-item")];
+            const targetIndex = afterElement == null ? droppedItems.length : allUIElements.indexOf(afterElement);
+
+            if (source === "catalog") {
+                const el = document.querySelector(`[data-key="${val}"]`);
+                const cat = [...el.classList].find(c => c.startsWith('cat-'));
+                const newItem = { ...catalog[val], id: Date.now().toString(), category: cat };
+                droppedItems.splice(targetIndex, 0, newItem);
+            } else if (source === "workspace") {
+                const oldIndex = droppedItems.findIndex(i => i.id === val);
+                const [movedItem] = droppedItems.splice(oldIndex, 1);
+                //adjust index when moving item down the list
+                const finalIndex = (oldIndex < targetIndex) ? targetIndex - 1 : targetIndex;
+                droppedItems.splice(finalIndex, 0, movedItem);
             }
+            render();
         });
 
-        //RENDER
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll(".dropped-item:not(.dragging)")];
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
         function render() {
             dropZone.innerHTML = "";
-
-            droppedItems.forEach((item, index) => {
+            droppedItems.forEach(item => {
                 const div = document.createElement("div");
-                div.classList.add("dropped-item");
+                div.className = `dropped-item ${item.category || ''}`;
                 div.draggable = true;
-
-                div.innerHTML = `
-            <span>${item.name}</span>
-            <button class="delete-btn">Delete</button>
-        `;
-
-                div.addEventListener("dragstart", () => {
-                    draggedId = item.id;
-                });
-
-                div.addEventListener("dragover", e => {
-                    e.preventDefault();
-                    const draggedIndex = droppedItems.findIndex(i => i.id === draggedId);
-                    if (draggedIndex !== index) {
-                        const moved = droppedItems.splice(draggedIndex, 1)[0];
-                        droppedItems.splice(index, 0, moved);
-                        render();
-                    }
-                });
-
-                div.querySelector(".delete-btn").onclick = () => {
-                    droppedItems = droppedItems.filter(i => i.id !== item.id);
-                    render();
-                };
-
+                div.dataset.id = item.id;
+                div.innerHTML = `<span>${item.name}</span><button class="delete-btn" onclick="deleteItem('${item.id}')">X</button>`;
                 dropZone.appendChild(div);
             });
-            printDropContents();
+            generateCode();
         }
 
-        //PRINT 
-        function printDropContents() {
-            const outputBox = document.getElementById("outputBox");
-            if (droppedItems.length === 0) {
-                outputBox.textContent = "No code to generate!";
-                return;
-            }
-            let headCode = "\n";
-            let setupCode = "void setup() {\n";
-            let loopCode = "void loop() {\n";
-
-            // If spaces code
-            let indentLevel = 1;
-
-            droppedItems.forEach((item) => {
-
-                if (`${item.headerDescription}` !== "undefined") {
-                    headCode += `${item.headerDescription}\n`;
-                }
-
-                if (item.position === "start") {
-                    setupCode += `    ${item.description}\n`;
-                }
-
-                if (item.position === "loop") {
-                    // If this is an END block move indentation back BEFORE printing
-                    if (item.name === "END IF") indentLevel--;
-                    if (item.name === "END ELSE") indentLevel--;
-                    //create space
-                    let spaces = "    ".repeat(indentLevel);
-                    loopCode += `${spaces}${item.description}\n`;
-
-                    //START block
-                    if (item.name.includes("THEN")) indentLevel++;
-                    if (item.name.includes("ELSE")) indentLevel++;
+        function generateCode() {
+            let head = "", setup = "void setup() {\n", loop = "void loop() {\n", indent = 1;
+            droppedItems.forEach(item => {
+                if (item.headerDescription) head += item.headerDescription + "\n";
+                if (item.position === "start") setup += "  " + item.description + "\n";
+                else {
+                    if (item.indent === -1) indent--;
+                    loop += "  ".repeat(Math.max(1, indent)) + item.description + "\n";
+                    if (item.indent === 1) indent++;
                 }
             });
-            headCode += "";
-            setupCode += "}\n";
-            loopCode += "}\n";
-
-            outputBox.textContent = headCode + "\n" + setupCode + "\n" + loopCode;
+            document.getElementById("outputBox").textContent = head + "\n" + setup + "}\n\n" + loop + "}";
         }
 
-        const copyBtn = document.getElementById("copyBtn");
-        const outputBox = document.getElementById("outputBox");
+        function deleteItem(id) { droppedItems = droppedItems.filter(i => i.id !== id); render(); }
+        function clearWorkspace() { droppedItems = []; render(); }
 
-        copyBtn.addEventListener("click", async () => {
-            const text = outputBox.textContent;
-
-            if (!text.trim()) return;
-
-            try {
-                await navigator.clipboard.writeText(text);
-
-                copyBtn.textContent = "Copied!";
-                setTimeout(() => {
-                    copyBtn.textContent = "Copy";
-                }, 1200);
-            } catch (err) {
-                console.error("Copy failed", err);
-            }
+        document.getElementById("downloadBtn").addEventListener("click", () => {
+            const code = document.getElementById("outputBox").textContent;
+            const blob = new Blob([code], { type: "text/plain" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "sketch.ino";
+            link.click();
         });
 
-        function clearWorkspace() {
-            droppedItems = []; // Empty the array
-            render();          // Clear the visual drop zone
-            document.getElementById("outputBox").textContent = "Generate Some Code!";
+        document.getElementById("copyBtn").addEventListener("click", () => {
+            navigator.clipboard.writeText(document.getElementById("outputBox").textContent);
+            window.alert("Code Copied!");
+        });
+
+        document.querySelectorAll(".collapsible").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const content = this.nextElementSibling;
+                content.style.display = content.style.display === "block" ? "none" : "block";
+            });
+        });
+
+        //convert the 'droppedItems' array into jsoon file
+        function saveProject() {
+            if (droppedItems.length === 0) return alert("Nothing to save!");
+
+            const data = JSON.stringify(droppedItems, null, 2);
+            const blob = new Blob([data], { type: "application/json" });
+            const link = document.createElement("a");
+
+            link.href = URL.createObjectURL(blob);
+            link.download = "arduino_logic.json";
+            link.click();
         }
 
-        var coll = document.getElementsByClassName("collapsible");
-        var i;
+        //read an uploaded json file and push it back into 'droppedItems'
+        function uploadProject(input) {
+            const file = input.files[0];
+            if (!file) return;
 
-        for (i = 0; i < coll.length; i++) {
-            coll[i].addEventListener("click", function () {
-                this.classList.toggle("active");
-                var content = this.nextElementSibling;
-                if (content.style.display === "block") {
-                    content.style.display = "none";
-                } else {
-                    content.style.display = "block";
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    //replace the current workspace array with the file data
+                    droppedItems = imported;
+                    render();
+                } catch (err) {
+                    alert("Error: This file doesn't look like a valid project.");
                 }
-            });
-        } 
+                input.value = ""; // Clear the input so you can upload the same file again
+            };
+            reader.readAsText(file);
+        }
     </script>
-
 </body>
 
 </html>
