@@ -17,12 +17,13 @@
             --text-on-teal: #ffffff;
             --text-code: #00ca9a;
             --border-ui: #d1d8d8;
-            --color-danger: #d9534f;
-            --cat-led: #e67e22;
-            --cat-timer: #9b59b6;
-            --cat-button: #3498db;
-            --cat-pot: #27ae60;
-            --cat-logic: #f1c40f;
+            --color-danger: #d82e28;
+            --cat-orange: #e67e22;
+            --cat-purple: #9b59b6;
+            --cat-blue: #3498db;
+            --cat-green: #27ae60;
+            --cat-yellow: #f1c40f;
+            --cat-red: #d9534f;
         }
 
         body {
@@ -88,24 +89,28 @@
             border-right: 1px solid rgba(0, 0, 0, 0.1);
         }
 
-        .cat-led {
-            --block-color: var(--cat-led);
+        .cat-red {
+            --block-color: var(--cat-red);
         }
 
-        .cat-timer {
-            --block-color: var(--cat-timer);
+        .cat-green {
+            --block-color: var(--cat-green);
         }
 
-        .cat-button {
-            --block-color: var(--cat-button);
+        .cat-yellow {
+            --block-color: var(--cat-yellow);
         }
 
-        .cat-pot {
-            --block-color: var(--cat-pot);
+        .cat-purple {
+            --block-color: var(--cat-purple);
         }
 
-        .cat-logic {
-            --block-color: var(--cat-logic);
+        .cat-blue {
+            --block-color: var(--cat-blue);
+        }
+
+        .cat-orange {
+            --block-color: var(--cat-orange);
         }
 
         .drag-item {
@@ -258,38 +263,58 @@
         <div class="panel" id="catalogPanel">
             <h3>Building Blocks</h3>
 
-            <button class="collapsible">LED Blocks</button>
+            <button class="collapsible">Red LED Blocks</button>
             <div class="content">
-                <div class="drag-item cat-led" draggable="true" data-key="enableLED">Enable LED</div>
-                <div class="drag-item cat-led" draggable="true" data-key="ledOn">Turn LED On</div>
-                <div class="drag-item cat-led" draggable="true" data-key="ledOff">Turn LED Off</div>
+                <div class="drag-item cat-red" draggable="true" data-key="enableLED">Enable Red LED</div>
+                <div class="drag-item cat-red" draggable="true" data-key="ledOn">Turn Red LED On</div>
+                <div class="drag-item cat-red" draggable="true" data-key="ledOff">Turn Red LED Off</div>
+            </div>
+
+            <button class="collapsible"> Green LED Blocks</button>
+            <div class="content">
+                <div class="drag-item cat-green" draggable="true" data-key="enableGreenLED">Enable Green LED</div>
+                <div class="drag-item cat-green" draggable="true" data-key="greenLedOn">Turn Green LED On</div>
+                <div class="drag-item cat-green" draggable="true" data-key="greenLedOff">Turn Green LED Off</div>
+            </div>
+
+            <button class="collapsible"> Light Sensor</button>
+            <div class="content">
+                <div class="drag-item cat-orange" draggable="true" data-key="enableLightSensor">Enable Light Sensor</div>
+                <div class="drag-item cat-orange" draggable="true" data-key="ifLightSensorDarkStart">IF Dark</div>
+                <div class="drag-item cat-orange" draggable="true" data-key="ifLightSensorEnd">END IF</div>
             </div>
 
             <button class="collapsible">Timer Blocks</button>
             <div class="content">
-                <div class="drag-item cat-timer" draggable="true" data-key="WaitOneSec">Wait 1 Second</div>
-                <div class="drag-item cat-timer" draggable="true" data-key="WaitThreeSec">Wait 3 Seconds</div>
+                <div class="drag-item cat-purple" draggable="true" data-key="WaitOneSec">Wait 1 Second</div>
+                <div class="drag-item cat-purple" draggable="true" data-key="WaitThreeSec">Wait 3 Seconds</div>
             </div>
 
             <button class="collapsible">Button Blocks</button>
             <div class="content">
-                <div class="drag-item cat-button" draggable="true" data-key="enableButton">Enable Button</div>
-                <div class="drag-item cat-button" draggable="true" data-key="ifButtonStart">IF Button Pressed</div>
-                <div class="drag-item cat-button" draggable="true" data-key="ifButtonEnd">END IF</div>
+                <div class="drag-item cat-blue" draggable="true" data-key="enableButton">Enable Button</div>
+                <div class="drag-item cat-blue" draggable="true" data-key="ifButtonStart">IF Button Pressed</div>
+                <div class="drag-item cat-blue" draggable="true" data-key="ifButtonEnd">END IF</div>
             </div>
 
             <button class="collapsible">Potentiometer Blocks</button>
             <div class="content">
-                <div class="drag-item cat-pot" draggable="true" data-key="enablePotentiometer">Enable Potentiometer
-                </div>
-                <div class="drag-item cat-pot" draggable="true" data-key="ifPotentiometer100Start">IF 100%</div>
-                <div class="drag-item cat-pot" draggable="true" data-key="ifPotentiometerEnd">END IF</div>
+                <div class="drag-item cat-orange" draggable="true" data-key="enablePotentiometer">Enable Potentiometer</div>
+                <div class="drag-item cat-orange" draggable="true" data-key="ifPotentiometer100Start">IF 100%</div>
+                <div class="drag-item cat-orange" draggable="true" data-key="ifPotentiometerEnd">END IF</div>
+            </div>
+
+            <button class="collapsible">Distance Blocks</button>
+            <div class="content">
+                <div class="drag-item cat-blue" draggable="true" data-key="enableDistanceSensor">Enable Distance Sensor</div>
+                <div class="drag-item cat-blue" draggable="true" data-key="ifDistanceSensorClose">IF Detected</div>
+                <div class="drag-item cat-blue" draggable="true" data-key="ifDistanceSensorCloseEnd">END IF</div>
             </div>
 
             <button class="collapsible">Logic Blocks</button>
             <div class="content">
-                <div class="drag-item cat-logic" draggable="true" data-key="elseStart">Else</div>
-                <div class="drag-item cat-logic" draggable="true" data-key="elseEnd">End Else</div>
+                <div class="drag-item cat-yellow" draggable="true" data-key="elseStart">Else</div>
+                <div class="drag-item cat-yellow" draggable="true" data-key="elseEnd">End Else</div>
             </div>
         </div>
 
@@ -326,19 +351,40 @@
 
     <script>
         const catalog = {
-            ledOn: { name: "Turn LED On", description: "digitalWrite(LED_PIN, HIGH);", position: "loop" },
-            ledOff: { name: "Turn LED Off", description: "digitalWrite(LED_PIN, LOW);", position: "loop" },
-            enableLED: { name: "Enable LED", description: "pinMode(LED_PIN, OUTPUT);", headerDescription: "#define LED_PIN 8", position: "start" },
+            //red led
+            ledOn: { name: "Turn Red LED On", description: "digitalWrite(LED_PIN, HIGH);", position: "loop" },
+            ledOff: { name: "Turn Red LED Off", description: "digitalWrite(LED_PIN, LOW);", position: "loop" },
+            enableLED: { name: "Enable Red LED", description: "pinMode(LED_PIN, OUTPUT);", headerDescription: "#define LED_PIN 8", position: "start" },
+            //green led
+            greenLedOn: { name: "Turn Green LED On", description: "digitalWrite(LED_PIN2, HIGH);", position: "loop" },
+            greenLedOff: { name: "Turn Green LED Off", description: "digitalWrite(LED_PIN2, LOW);", position: "loop" },
+            enableGreenLED: { name: "Enable Green LED", description: "pinMode(LED_PIN2, OUTPUT);", headerDescription: "#define LED2_PIN 9", position: "start" },
+            //timers
             WaitOneSec: { name: "Wait 1 Second", description: "delay(1000);", position: "loop" },
             WaitThreeSec: { name: "Wait 3 Seconds", description: "delay(3000);", position: "loop" },
+            //button
             ifButtonStart: { name: "IF (Button)", description: "if (digitalRead(4) == LOW) {", position: "loop", indent: 1 },
             ifButtonEnd: { name: "END IF", description: "}", position: "loop", indent: -1 },
             enableButton: { name: "Enable Button", description: "pinMode(BUTTON_PIN, INPUT_PULLUP);", headerDescription: "#define BUTTON_PIN 4", position: "start" },
+            //pot
             enablePotentiometer: { name: "Enable Pot", description: "potVal = analogRead(potPin)/10.24;", headerDescription: "int potPin = A3;\nint potVal = 0;", position: "loop" },
             ifPotentiometer100Start: { name: "IF (Pot > 90)", description: "if (potVal > 90) {", position: "loop", indent: 1 },
             ifPotentiometerEnd: { name: "END IF", description: "}", position: "loop", indent: -1 },
+            //light sensor
+            enableLightSensor: { name: "Enable Light Sensor", description: "lightValue = analogRead(A0);", headerDescription: "int lightPin = A0;\nint lightValue = 0;", position: "loop" },
+            ifLightSensorDarkStart: { name: "IF Dark", description: "if (lightValue < 8) {", position: "loop", indent: 1 },
+            ifLightSensorEnd: { name: "END IF", description: "}", position: "loop", indent: -1 },
+            //bonus logic
             elseStart: { name: "ELSE", description: "else {", position: "loop", indent: 1 },
             elseEnd: { name: "END ELSE", description: "}", position: "loop", indent: -1 },
+            //distanceSensor
+            enableDistanceSensor: { 
+                name: "Enable Distance Sensor", 
+                description: "int distance = sonar.ping_cm();", 
+                headerDescription: "#include <NewPing.h>\nint trigPin = 2;\nint echoPin = 3;\nint maxDistance = 100;\nNewPing sonar(trigPin, echoPin, maxDistance);", 
+                position: "loop" },
+            ifDistanceSensorClose: { name: "IF Detected", description: "if (distance > 0 && distance < 30) {", position: "loop", indent: 1 },
+            ifDistanceSensorCloseEnd: { name: "END IF", description: "}", position: "loop", indent: -1 }
         };
 
         let droppedItems = [];
@@ -432,17 +478,18 @@
         }
 
         function generateCode() {
-            let head = "", setup = "void setup() {\n", loop = "void loop() {\n", indent = 1;
+            let head = "", setup = "void setup() {\n", loop = "void loop() {\n", funcs = "", indent = 1;
             droppedItems.forEach(item => {
                 if (item.headerDescription) head += item.headerDescription + "\n";
                 if (item.position === "start") setup += "  " + item.description + "\n";
+                else if (item.position === "funcs") funcs += item.description + "\n";
                 else {
                     if (item.indent === -1) indent--;
                     loop += "  ".repeat(Math.max(1, indent)) + item.description + "\n";
                     if (item.indent === 1) indent++;
                 }
             });
-            document.getElementById("outputBox").textContent = head + "\n" + setup + "}\n\n" + loop + "}";
+            document.getElementById("outputBox").textContent = head + "\n" + setup + "}\n\n" + loop + "}" + "\n" + funcs;
         }
 
         function deleteItem(id) { droppedItems = droppedItems.filter(i => i.id !== id); render(); }
