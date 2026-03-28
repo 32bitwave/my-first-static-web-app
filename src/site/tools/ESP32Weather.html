@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIY-ESP32-Temp-Tutorial</title>
+    <style>
+        :root {
+            --burnt-orange: #d36546;
+            --mustard: #f2cc8f;
+            --avocado: #81b29a;
+            --deep-brown: #3d405b;
+            --cream: #f4f1de;
+        }
+
+        body {
+            background-color: var(--mustard);
+            background-image: linear-gradient(180deg, var(--burnt-orange) 25%, transparent 25%),
+                linear-gradient(90deg, var(--mustard) 50%, var(--cream) 50%);
+            background-size: 80px 80px;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--deep-brown);
+            margin: 0;
+            padding: 15px;
+        }
+
+        /* Style the code block */
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 50px;
+            border: 1px solid #ccc;
+            font-family: "Courier New", Courier, monospace;
+            white-space: pre-wrap; 
+            word-wrap: break-word; 
+            max-width: 100%; 
+            overflow-x: auto; /* Add horizontal scroll if necessary */
+        }
+
+        /* Optional: Highlighting code */
+        code {
+            display: block;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 95%;
+            margin: 10px auto;
+            background: var(--cream);
+            padding: 20px;
+            border-radius: 30px;
+            border: 6px solid var(--burnt-orange);
+            box-shadow: 10px 10px 0px var(--deep-brown);
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 4px dashed var(--avocado);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin: 10px 0;
+            color: var(--burnt-orange);
+            text-shadow: 2px 2px var(--mustard);
+            line-height: 1;
+        }
+
+        .camper-box {
+            width: auto;
+            height: auto;
+            background: var(--avocado);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid var(--deep-brown);
+        }
+
+        .camper-box img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .post-area {
+            margin-top: 25px;
+        }
+
+        .post-title {
+            font-size: 1.5rem;
+            background: var(--burnt-orange);
+            color: white;
+            display: inline-block;
+            padding: 5px 15px;
+            transform: rotate(-6deg);
+            margin-bottom: 10px;
+        }
+
+        .home-title {
+            font-size: 1.5rem;
+            background: var(--burnt-orange);
+            color: white;
+            display: inline-block;
+            padding: 5px 15px;
+            margin-bottom: 10px;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .links a {
+            text-decoration: none;
+            color: white;
+            background: var(--burnt-orange);
+            border-radius: 999px;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.95rem;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .blog-content {
+            line-height: 1.5;
+            font-size: 1.1rem;
+            padding: 10px;
+            min-height: 150px;
+        }
+
+        /* MEDIA QUERIES for bigger screens */
+        @media (min-width: 600px) {
+            body {
+                padding: 40px;
+            }
+
+            h1 {
+                font-size: 3.5rem;
+            }
+
+            .container {
+                padding: 40px;
+                width: 100%;
+            }
+
+            .post-title {
+                font-size: 2rem;
+            }
+
+            .camper-box {
+                width: auto;
+                height: auto;
+            }
+
+            .camper-box img {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+        }
+
+        .groovy-btn {
+            background: var(--deep-brown);
+            color: var(--cream);
+            padding: 15px 25px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            transition: transform 0.2s;
+        }
+
+        .groovy-btn:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Hot or Cold?</h1>
+            <p><i>ESP32 powered website using DHT11 temp sensor</i></p>
+        </header>
+
+        <div class="post-area">
+            <h2 class="post-title">Who is Kelvin?</h2>
+
+            <div class="blog-content">
+                Let's use our ESP32 to display the temperature and humidity from a DHT11 sensor to 
+                a mini OLED and our own website hosted by the ESP32! 
+                We are going to leverage a few different libraries today: DHT11, SSD1306 OLED, and DIYables webserver.
+                If you do not know how to install a library, 
+                go check out my other tutorial called "Arduino OLED".
+                <br><br>
+                Lets dive right into this one and let the code (//and code comments) speak for itself!
+                <br><br>
+                Here is how to connect your sensor and display:
+                <div class="camper-box">
+                    <img src="weatherStation.PNG" alt="">
+                </div>
+                <br><br>
+                Here is the Code, put this into your Arduino IDE:
+                <pre>
+                    <code>
+//libraries we will use
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+#include &lt;DHT.h&gt;
+#include &lt;DIYables_ESP32_WebServer.h&gt;
+
+//oled settings
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+
+//temp sensor pins
+#define DHT11_PIN 18
+
+//Variables for the site, [global variables]
+float tempF = 0;
+float humi = 0;
+unsigned long lastUpdate = 0;
+
+//this is for the temp sensor
+DHT dht11(DHT11_PIN, DHT11);
+DIYables_ESP32_WebServer server;
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
+//you need to put YOUR wifi info here 
+const char WIFI_SSID[] = "WIFINAMEHERE";
+const char WIFI_PASSWORD[] = "YOURWIFIPASSWORDHERE";
+
+//this controls your website, if your familiar with html
+//look at the String(tempF) and String(humi)
+//those are the values our sensor sends to the website
+void handleHome(WiFiClient& client, const String& method, const String& request, const QueryParams& params, const String& jsonData) {
+  String html = "&lt;html&gt;&lt;head&gt;&lt;meta http-equiv='refresh' content='5'&gt;&lt;/head&gt;&lt;body style='font-family:sans-serif; text-align:center;'&gt;";
+  html += "&lt;h1>ESP32 Weather Station&lt;/h1&gt;";
+  html += "&lt;div style='font-size: 24px;'&gt;";
+  html += "&lt;h1>Temperature: &lt;b style='color:red;'&gt;" + String(tempF) + " F&lt;/b&gt;&lt;/h1&gt;";
+  html += "&lt;h1>Humidity: &lt;b style='color:blue;'&gt;" + String(humi) + " %&lt;/b>&lt;/h1&gt;";
+  html += "&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;";
+
+  // .c_str() converts the String to the format the library requires
+  server.sendResponse(client, html.c_str());
+}
+
+void setup() {
+  Serial.begin(9600); //for serial monitor logs
+  dht11.begin(); //starts the sensors
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    for (;;)
+      ;
+  }
+
+  server.addRoute("/", handleHome);
+  server.begin(WIFI_SSID, WIFI_PASSWORD);
+
+  //all the display settings for ini
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+}
+
+void loop() {
+  // Handle web requests constantly (No delays)
+  server.handleClient();
+
+  // update sensors and mini oled every 2 seconds
+  if (millis() - lastUpdate >= 2000) {
+    lastUpdate = millis();
+
+    tempF = dht11.readTemperature(true);
+    humi = dht11.readHumidity();
+
+    // Update OLED, the dashes are for style
+    display.clearDisplay();
+    display.setCursor(0, 0);
+    display.println("-------------");
+    display.println("SYSTEM ONLINE");
+    display.println("-------------");
+    display.print("Temp: ");
+    display.print(tempF);
+    display.println(" F");
+    display.println("-------------");
+    display.print("Humi: ");
+    display.print(humi);
+    display.println(" %");
+    display.println("-------------");
+    display.display();
+  }
+}
+                    </code>
+                </pre>
+                <br><br>
+                Alright, now that we have the code lets talk about how this thing works.
+                It is normal for this code to take a while to compile and upload. 
+                1st time it took me about 1 to 2 minutes!
+                <br><br>
+                You will want to go to the serial monitor, use 9600 Baud, 
+                and you will see a console output saying the IP you should put in your browser.
+                If you need to know how to get to serial monitor its in the top tool bar under tools.
+                I would show you this step but the output from the serial monitor will be different for everyone. 
+                <br><br>
+                When you navigate out to the site, it should look something like this and auto update:
+                <div class="camper-box">
+                    <img src="ESP32website.PNG" alt="">
+                </div>
+                You also have your mini OLED showing the data locally. 
+                You can remove the website code or remove the OLED code so you can just have what you want.
+                NOTE: your mini OLED will not display anything if your ESP32 is stuck trying to connect to your wifi!
+                <br><br>
+                Some troubleshooting steps if you get stuck:<br>
+                -Check your serial monitor output<br>
+                -After uploading the code, unplug and plug in your esp32 again<br>
+                -Copy the code again, put the wifi info into the variables<br>
+                -Check your wires and DHT11, they can have a different pinout<br>
+                -Check OLED they can have a different pinout<br>
+                -Make sure your libraries are installed correctly<br>
+                -Sometimes libraries can be nammed very similar<br>
+                <br>
+                I would like to also thank the people who made the libraries and took the time to document
+                making ESP32 websites![randomnerdtutorials, esp32io, adafruit, and Talking Electronics]
+            </div>
+        </div>
+        <div class="links">
+            <a href="../index.html">🏠 Home 🏠</a>
+        </div>
+    </div>
+
+    <script>
+        function home() {
+            //
+        }
+    </script>
+</body>
+
+</html>
