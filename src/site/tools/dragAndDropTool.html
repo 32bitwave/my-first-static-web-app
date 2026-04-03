@@ -311,10 +311,18 @@
                 <div class="drag-item cat-blue" draggable="true" data-key="ifDistanceSensorCloseEnd">END IF</div>
             </div>
 
+            <button class="collapsible">Display Blocks</button>
+            <div class="content">
+                <div class="drag-item cat-yellow" draggable="true" data-key="enableDisplay">Enable Display</div>
+                <div class="drag-item cat-yellow" draggable="true" data-key="clearDisplay">Clear Display</div>
+                <div class="drag-item cat-yellow" draggable="true" data-key="displaySayGood">Say "GOOD"</div>
+                <div class="drag-item cat-yellow" draggable="true" data-key="displaySayStop">Say "STOP"</div>
+            </div>
+
             <button class="collapsible">Logic Blocks</button>
             <div class="content">
-                <div class="drag-item cat-yellow" draggable="true" data-key="elseStart">Else</div>
-                <div class="drag-item cat-yellow" draggable="true" data-key="elseEnd">End Else</div>
+                <div class="drag-item cat-purple" draggable="true" data-key="elseStart">Else</div>
+                <div class="drag-item cat-purple" draggable="true" data-key="elseEnd">End Else</div>
             </div>
         </div>
 
@@ -384,7 +392,16 @@
                 headerDescription: "#include <NewPing.h>\nint trigPin = 2;\nint echoPin = 3;\nint maxDistance = 100;\nNewPing sonar(trigPin, echoPin, maxDistance);", 
                 position: "loop" },
             ifDistanceSensorClose: { name: "IF Detected", description: "if (distance > 0 && distance < 30) {", position: "loop", indent: 1 },
-            ifDistanceSensorCloseEnd: { name: "END IF", description: "}", position: "loop", indent: -1 }
+            ifDistanceSensorCloseEnd: { name: "END IF", description: "}", position: "loop", indent: -1 },
+            //display
+            enableDisplay: { 
+                name: "Enable Display", 
+                description: "display.begin();\n  display.setBacklight(100);", 
+                headerDescription: "#include \"SevenSegmentTM1637.h\"\nconst byte PIN_CLK = 6;\nconst byte PIN_DIO = 7;\nSevenSegmentTM1637 display(PIN_CLK, PIN_DIO);", 
+                position: "start" },
+            clearDisplay: { name: "Clear Display", description: 'display.clear();', position: "loop"},
+            displaySayGood: { name: "Say GOOD", description: 'display.print("GOOD");', position: "loop"},
+            displaySayStop: { name: "Say STOP", description: 'display.print("STOP");', position: "loop"}
         };
 
         let droppedItems = [];
