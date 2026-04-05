@@ -317,6 +317,8 @@
                 <div class="drag-item cat-yellow" draggable="true" data-key="clearDisplay">Clear Display</div>
                 <div class="drag-item cat-yellow" draggable="true" data-key="displaySayGood">Say "GOOD"</div>
                 <div class="drag-item cat-yellow" draggable="true" data-key="displaySayStop">Say "STOP"</div>
+                <div class="drag-item cat-yellow" draggable="true" data-key="displaySayGo">Say "GO"</div>
+                <div class="drag-item cat-yellow" draggable="true" data-key="displaySayBad">Say "BAD"</div>
             </div>
 
             <button class="collapsible">Logic Blocks</button>
@@ -400,8 +402,10 @@
                 headerDescription: "#include \"SevenSegmentTM1637.h\"\nconst byte PIN_CLK = 6;\nconst byte PIN_DIO = 7;\nSevenSegmentTM1637 display(PIN_CLK, PIN_DIO);", 
                 position: "start" },
             clearDisplay: { name: "Clear Display", description: 'display.clear();', position: "loop"},
+            displaySayGo: { name: "Say GO", description: 'display.print(" GO ");', position: "loop"},
+            displaySayStop: { name: "Say STOP", description: 'display.print("STOP");', position: "loop"},
             displaySayGood: { name: "Say GOOD", description: 'display.print("GOOD");', position: "loop"},
-            displaySayStop: { name: "Say STOP", description: 'display.print("STOP");', position: "loop"}
+            displaySayBad: { name: "Say BAD", description: 'display.print("BAD ");', position: "loop"},
         };
 
         let droppedItems = [];
