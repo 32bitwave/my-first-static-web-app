@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Database!</title>
+    <style>
+        :root {
+            --card-gold: #d4af37;
+            --card-bg: #00f3ff;
+        }
+
+        body {
+            margin: 0;
+            background-color: #121212;
+            font-family: sans-serif;
+            padding: 40px 15px;
+        }
+
+        .vaporwave-container {
+            text-align: center;
+            margin-bottom: 50px;
+            width: 100%;
+        }
+
+        .vaporwave-title {
+            font-family: "Arial Black", sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            font-style: italic;
+            text-transform: uppercase;
+            margin: 0;
+            background: linear-gradient(to bottom, #00f3ff 0%, #00f3ff 45%, #fff 50%, #ff00de 55%, #ff00de 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(2px 2px 0px #333) drop-shadow(0 0 15px #ff00de);
+            letter-spacing: -2px;
+            transform: skewX(-10deg);
+        }
+
+        .vaporwave-subtitle {
+            font-family: "Courier New", monospace;
+            font-size: 1.2rem;
+            color: #3fe70c;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            text-shadow: 0 0 10px #00f3ff;
+            margin-top: 10px;
+            display: block;
+            font-style: italic;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            perspective: none;
+        }
+
+        .tcg-card {
+            flex: 0 0 320px;
+            width: 320px;
+            background: linear-gradient(135deg, #eecf6d 0%, #ffeafc 50%, #ff00de 100%);
+            padding: 12px;
+            border-radius: 18px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-sizing: border-box;
+
+            perspective: 1000px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+            will-change: transform;
+            transform-style: preserve-3d;
+            cursor: crosshair;
+        }
+
+        .tcg-card:hover {
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 243, 255, 0.4);
+            z-index: 10;
+        }
+
+        .card-inner {
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            border: 2px solid #555;
+            box-sizing: border-box;
+            transform: translateZ(10px);
+            margin: 0;
+            position: relative;
+            left: 0;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .window-container {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #000;
+            border-radius: 8px;
+            border: 3px solid #777;
+            overflow: hidden;
+            image-rendering: pixelated;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        .viewer-box {
+            width: 100%;
+            height: 100%;
+        }
+
+        .card-stats ul {
+            padding-left: 20px;
+            font-size: 0.9rem;
+            color: #333;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .vaporwave-title {
+                font-size: 2.2rem;
+            }
+
+            .vaporwave-subtitle {
+                font-size: 0.8rem;
+                letter-spacing: 4px;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .tcg-card {
+                flex: 0 1 100%;
+                width: 100%;
+                min-width: 0;
+            }
+
+            .card-container {
+                gap: 20px;
+                padding: 0 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="vaporwave-container">
+        <h1 class="vaporwave-title">The Database</h1>
+        <span class="vaporwave-subtitle"> Digital Artifacts || Vol. 001</span>
+    </header>
+
+    <div class="card-container">
+        <div class="tcg-card">
+            <div class="card-inner">
+                <div class="card-header">
+                    <span>Phone Holder</span>
+                    <span><a href="STL/phoneHolder.stl" download>Download</a></span>
+                </div>
+                <div class="window-container">
+                    <div id="viewer1" class="viewer-box" data-model="STL/phoneHolder.stl"></div>
+                </div>
+                <div class="card-stats">
+                    <ul>
+                        <li>Wide and Stable</li>
+                        <li>No Supports Needed</li>
+                        <li>Phones & Tablets</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="tcg-card">
+            <div class="card-inner">
+                <div class="card-header">
+                    <span>EuroRack Panel</span>
+                    <span><a href="STL/eurorackPanel.stl" download>Download</a></span>
+                </div>
+                <div class="window-container">
+                    <div id="viewer2" class="viewer-box" data-model="STL/eurorackPanel.stl"></div>
+                </div>
+                <div class="card-stats">
+                    <ul>
+                        <li>Eurorack Compliant</li>
+                        <li>Roughly 6HP</li>
+                        <li>Panel for a VCO</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="tcg-card">
+            <div class="card-inner">
+                <div class="card-header">
+                    <span>Zero 2 W Case</span>
+                    <span><a href="STL/piZero2W.stl" download>Download</a></span>
+                </div>
+                <div class="window-container">
+                    <div id="viewer3" class="viewer-box" data-model="STL/piZero2W.stl"></div>
+                </div>
+                <div class="card-stats">
+                    <ul>
+                        <li>Good Airflow</li>
+                        <li>2 Part Case</li>
+                        <li>Open GPIO Pins</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+        const cards = document.querySelectorAll('.tcg-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; // x position within element
+                const y = e.clientY - rect.top;  // y position within element
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -20;
+                const rotateY = ((x - centerX) / centerX) * 20;
+                card.style.transform = `scale(1.1) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `scale(1) rotateX(0) rotateY(0)`;
+            });
+        });
+        const palette = [0x40E0D0, 0xD81B60, 0x7B1FA2, 0x0288D1, 0xFBC02D, 0x7CB342, 0xFB8C00];
+        const getPaletteColor = () => palette[Math.floor(Math.random() * palette.length)];
+        const format = THREE.RedFormat;
+        const colors = new Uint8Array([0, 140, 255]);
+        const gradientMap = new THREE.DataTexture(colors, colors.length, 1, format);
+        gradientMap.needsUpdate = true;
+        function initViewer(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            const modelPath = container.getAttribute('data-model');
+            const scene = new THREE.Scene();
+            const rotSpeedY = 0.005 + Math.random() * 0.01;
+            const rotSpeedX = 0.002 + Math.random() * 0.005;
+            const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
+            renderer.setPixelRatio(1);
+            renderer.setSize(320, 320);
+            container.appendChild(renderer.domElement);
+            const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 2000);
+            const grid = new THREE.GridHelper(500, 30, 0x444444, 0x222222);
+            grid.rotation.x = Math.PI / 2; grid.position.z = -120;
+            scene.add(grid);
+            scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 1.75));
+            const light = new THREE.DirectionalLight(0xffffff, 2);
+            light.position.set(20, 20, 20); scene.add(light);
+            let mesh;
+            const loader = new STLLoader();
+            const retroRes = container.clientWidth; // Dynamically get width instead of hardcoded 320
+            renderer.setSize(retroRes, retroRes);
+            loader.load(modelPath, (geometry) => {
+                geometry.center();
+                const material = new THREE.MeshToonMaterial({ color: getPaletteColor(), gradientMap: gradientMap });
+                mesh = new THREE.Mesh(geometry, material);
+                mesh.rotation.x = Math.random() * Math.PI * 2;
+                mesh.rotation.y = Math.random() * Math.PI * 2;
+                geometry.computeBoundingBox();
+                const size = new THREE.Vector3();
+                geometry.boundingBox.getSize(size);
+                camera.position.z = Math.max(size.x, size.y, size.z) * 2.5;
+                camera.lookAt(0, 0, 0);
+                scene.add(mesh);
+            });
+            function animate() {
+                requestAnimationFrame(animate);
+                if (mesh) { mesh.rotation.y += rotSpeedY; mesh.rotation.x += rotSpeedX; }
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+        initViewer('viewer1'); initViewer('viewer2'); initViewer('viewer3');
+    </script>
+</body>
+</html>
