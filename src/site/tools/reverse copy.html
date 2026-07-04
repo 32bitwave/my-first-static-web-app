@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steady Aim</title>
+    <style>
+        :root {
+            --burnt-orange: #d36546;
+            --mustard: #f2cc8f;
+            --avocado: #81b29a;
+            --deep-brown: #3d405b;
+            --cream: #f4f1de;
+        }
+
+        body {
+            background-color: var(--mustard);
+            background-image: linear-gradient(180deg, var(--burnt-orange) 25%, transparent 25%),
+                linear-gradient(90deg, var(--mustard) 50%, var(--cream) 50%);
+            background-size: 80px 80px;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--deep-brown);
+            margin: 0;
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 95%;
+            margin: 10px auto;
+            background: var(--cream);
+            padding: 20px;
+            border-radius: 30px;
+            border: 6px solid var(--burnt-orange);
+            box-shadow: 10px 10px 0px var(--deep-brown);
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 4px dashed var(--avocado);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin: 10px 0;
+            color: var(--burnt-orange);
+            text-shadow: 2px 2px var(--mustard);
+            line-height: 1;
+        }
+
+        .camper-box {
+            width: auto;
+            height: auto;
+            background: var(--avocado);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid var(--deep-brown);
+        }
+
+        .camper-box img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .post-area {
+            margin-top: 25px;
+        }
+
+        .post-title {
+            font-size: 1.5rem;
+            background: var(--burnt-orange);
+            color: white;
+            display: inline-block;
+            padding: 5px 15px;
+            transform: rotate(-6deg);
+            margin-bottom: 10px;
+        }
+
+        .home-title {
+            font-size: 1.5rem;
+            background: var(--burnt-orange);
+            color: white;
+            display: inline-block;
+            padding: 5px 15px;
+            margin-bottom: 10px;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .links a {
+            text-decoration: none;
+            color: white;
+            background: var(--burnt-orange);
+            border-radius: 999px;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.95rem;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .blog-content {
+            line-height: 1.5;
+            font-size: 1.1rem;
+            padding: 10px;
+            min-height: 150px;
+        }
+
+        /* MEDIA QUERIES for bigger screens */
+        @media (min-width: 600px) {
+            body {
+                padding: 40px;
+            }
+
+            h1 {
+                font-size: 3.5rem;
+            }
+
+            .container {
+                padding: 40px;
+                width: 100%;
+            }
+
+            .post-title {
+                font-size: 2rem;
+            }
+
+            .camper-box {
+                width: auto;
+                height: auto;
+            }
+
+            .camper-box img {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+        }
+
+        .groovy-btn {
+            background: var(--deep-brown);
+            color: var(--cream);
+            padding: 15px 25px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            transition: transform 0.2s;
+        }
+
+        .groovy-btn:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Steady, Aim, Solder!</h1>
+            <p><i>Stop fighting your hands while you solder</i></p>
+        </header>
+
+        <div class="post-area">
+            <h2 class="post-title">WARNING: HOT!</h2>
+
+            <div class="blog-content">
+                Here is a stabilizing tool I built for soldering. I made it for myself but figured it would be helpful for others.
+                <br><br>
+                This is still in beta, so think of it as a work in progress. The attachments can be adjusted in Tinkercad, 
+                so if the fit is not right for your hand you can tweak the design. 
+                You can find the design in the 3D database on this website.
+                <br><br>
+                You will need a few specific items to make this work. The wire gives just the right amount of resistance and give.
+                <ul>
+                    <li>9 Gauge Aluminum Armature Wire</li>
+                    <li>Pinecil Smart Mini Portable Soldering Iron</li>
+                </ul>
+                Some basic soldering safety reminders, in case you need a refresher:
+                <ul>
+                    <li>Wear eye protection, solder splatters more than you think</li>
+                    <li>Use a fume extractor or work somewhere ventilated</li>
+                    <li>The iron tip gets dangerously hot, keep it away from skin and anything flammable</li>
+                    <li>Always rest the iron on a stand when you are not using it</li>
+                    <li>Wash your hands after handling solder, most of it contains lead</li>
+                </ul>
+                Boring part: This design is provided as-is, without warranty of any kind, express or implied. 
+                The creator assumes no responsibility for the accuracy, safety, or suitability of this design for any particular application. 
+                This is a set of instructions for a user-assembled device, not a manufactured product. 
+                The user bears sole responsibility for sourcing materials, assembly, testing, and operation. 
+                By constructing or using this device, the user assumes all risk of injury, property damage, or other loss, 
+                and releases the creator from any and all liability arising from its construction or use.
+        </div>
+        <div class="links">
+            <a href="../index.html">🏠 Home 🏠</a>
+        </div>
+    </div>
+
+    <script>
+        function home() {
+            //
+        }
+    </script>
+</body>
+
+</html>
